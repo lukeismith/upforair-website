@@ -1,0 +1,29 @@
+---
+interface Props {
+  class?: string;
+  [key: string]: unknown;
+}
+const { class: cls, ...rest } = Astro.props;
+---
+
+<span class:list={['tag', cls]} {...rest}><slot /></span>
+
+<style>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: rgba(13, 13, 13, 0.4);
+    box-shadow: 0 0 0 1px var(--border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    white-space: nowrap;
+  }
+</style>

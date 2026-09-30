@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeader from './SectionHeader.astro';
+import Glow from './Glow.astro';
+import Logo from './icons/Logo.astro';
+import glowPurple from '../assets/backgrounds/glow-purple.jpg';
+import addTasks from '../assets/illustrations/add-tasks.png';
+import trackComplete from '../assets/illustrations/track-complete.png';
+import { howItWorks } from '../data/site';
+
+const art = { 'add-tasks': addTasks, 'track-complete': trackComplete } as const;
+---
+
+<section class="section how" id="how-it-works" aria-labelledby="how-title">
+  <div class="container">
+    <SectionHeader tag={howItWorks.tag} title={howItWorks.title} subtitle={howItWorks.subtitle} />
+
+    <div class="how__grid">
+      <Glow src={glowPurple} opacity={0.8} class="how__glow" />
+      {howItWorks.steps.map((step, i) => (
+        <article class="card how__card" data-appear style={`--appear-delay:${i * 0.1}s`}>
+          <span class="how__number" aria-hidden="true">{i + 1}</span>
+          <div class="how__art">
+            {step.art === 'logo' ? (
+              <Logo size={110} class="how__logo" />
+            ) : (
+              <Image src={art[step.art]} alt="" width={364} class="how__image" />
+            )}
+          </div>
+          <h3 class="h3">{step.title}</h3>
+          <p class="body">{step.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .how__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+  .how :global(.how__glow) {
+    inset: -10% -5%;
+    border-radius: 0;
+  }
+  .how__card {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 493px;
+    padding: 40px 24px;
+    overflow: visible;
+  }
+  .how__number {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    border-radius: 80px;
+    background: var(--surface-3);
+    box-shadow: 0 0 0 1px var(--border);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .how__art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 240px;
+    margin-bottom: 20px;
+  }
+  .how :global(.how__logo) {
+    opacity: 0.08;
+  }
+  .how :global(.how__image) {
+    width: 100%;
+    max-width: 288px;
+    height: auto;
+  }
+
+  @media (max-width: 1199.98px) {
+    .how__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 32px;
+    }
+  }
+  @media (max-width: 809.98px) {
+    .how__grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-top: 48px;
+    }
+    .how__card {
+      min-height: 0;
+    }
+    .how__art {
+      min-height: 200px;
+    }
+  }
+</style>

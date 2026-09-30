@@ -1,0 +1,37 @@
+---
+import Tag from './Tag.astro';
+
+interface Props {
+  tag?: string;
+  /** May contain `<em>` for the italic serif accent. */
+  title: string;
+  subtitle?: string;
+  as?: 'h1' | 'h2';
+  class?: string;
+}
+const { tag, title, subtitle, as: Heading = 'h2', class: cls } = Astro.props;
+---
+
+<div class:list={['section-header', cls]} data-appear>
+  {tag && <Tag>{tag}</Tag>}
+  <Heading class="h2 section-header__title" set:html={title} />
+  {subtitle && <p class="lead section-header__sub">{subtitle}</p>}
+</div>
+
+<style>
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .section-header__title {
+    text-wrap: balance;
+  }
+  .section-header__sub {
+    max-width: 620px;
+  }
+</style>

@@ -1,0 +1,156 @@
+---
+/**
+ * The small pill navigation that appears under the header once the visitor
+ * starts scrolling, highlights the section in view, and hides again after a
+ * few seconds of inactivity. Only meant for the home page.
+ */
+import { sections } from '../data/site';
+
+interface Props {
+  /** Seconds of no scrolling before the pill fades out. */
+  idleDelay?: number;
+  /** Distance from the top of the viewport. */
+  offset?: number;
+}
+const { idleDelay = 5, offset = 104 } = Astro.props;
+---
+
+<nav
+  class="secnav"
+  aria-label="Section navigation"
+  data-secnav
+  data-idle={idleDelay}
+  style={`--offset:${offset}px`}
+>
+  {sections.map((s) => (
+    <a href={`/#${s.id}`} data-target={s.id}>{s.label}</a>
+  ))}
+</nav>
+
+<style>
+  .secnav {
+    position: fixed;
+    top: var(--offset);
+    left: 24px;
+    z-index: 40;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 8px;
+    max-width: calc(100vw - 48px);
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(8, 8, 9, 0.62);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition:
+      opacity 0.26s ease,
+      transform 0.26s ease;
+  }
+  .secnav.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .secnav a {
+    padding: 5px 8px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12.5px;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.42);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .secnav a:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .secnav a.is-active {
+    color: rgba(255, 255, 255, 0.98);
+  }
+  .secnav a:focus-visible {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.36);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+  }
+  @media (max-width: 809.98px) {
+    .secnav {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .secnav {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-secnav]');
+
+  if (nav) {
+    const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a[data-target]'));
+    const ratios = new Map<string, number>();
+    const idleMs = Number(nav.dataset.idle ?? 5) * 1000;
+    let hideTimer: number | undefined;
+    let raf: number | undefined;
+
+    const setActive = () => {
+      let best: HTMLAnchorElement | null = null;
+      let bestRatio = -1;
+      for (const link of links) {
+        const ratio = ratios.get(link.dataset.target!) ?? 0;
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          best = link;
+        }
+      }
+      links.forEach((l) => l.classList.toggle('is-active', l === best));
+    };
+
+    const show = () => {
+      nav.classList.add('is-visible');
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => nav.classList.remove('is-visible'), idleMs);
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = undefined;
+        show();
+        setActive();
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          ratios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+        }
+        setActive();
+      },
+      { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] },
+    );
+
+    for (const link of links) {
+      const section = document.getElementById(link.dataset.target!);
+      if (section) {
+        ratios.set(section.id, 0);
+        observer.observe(section);
+      }
+      link.addEventListener('click', () => {
+        history.replaceState(null, '', `/#${link.dataset.target}`);
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    setActive();
+  }
+</script>

@@ -1,0 +1,44 @@
+---
+import Logo from './icons/Logo.astro';
+import Button from './Button.astro';
+import { cta } from '../data/site';
+---
+
+<section class="section cta" aria-labelledby="cta-title">
+  <div class="container cta__inner" data-appear>
+    <Logo size={48} class="cta__logo" />
+    <h2 id="cta-title" class="h2 cta__title" set:html={cta.title} />
+    <p class="lead cta__subtitle">{cta.subtitle}</p>
+    <div class="cta__actions">
+      <Button href={cta.button.href} apple>{cta.button.label}</Button>
+      <p class="tiny dim">{cta.note}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+  .cta :global(.cta__logo) {
+    color: #fff;
+  }
+  .cta__title {
+    max-width: 520px;
+    text-wrap: balance;
+  }
+  .cta__subtitle {
+    max-width: 420px;
+  }
+  .cta__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+</style>
