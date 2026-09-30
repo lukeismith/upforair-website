@@ -1,24 +1,21 @@
 ---
-import { Image } from 'astro:assets';
-import Logo from './icons/Logo.astro';
+import Wordmark from './Wordmark.astro';
 import Glow from './Glow.astro';
-import glowBlue from '../assets/backgrounds/glow-blue.jpg';
 import { brand, footer } from '../data/site';
 
 const { newsletter, columns } = footer;
-const credit = brand.credit;
 ---
 
 <footer class="footer">
-  <Glow src={glowBlue} hue={33} opacity={0.75} position="70% 100%" class="footer__glow" />
-
+  <Glow color="var(--apricot)" x="78%" y="100%" width="55%" height="90%" opacity={0.16} />
   <div class="footer__main container--wide">
     <div class="footer__brand">
-      <a href="/" class="footer__logo" aria-label={`${brand.name} home`}>
-        <Logo size={28} />
+      <a href="/" class="footer__home" aria-label={`${brand.name} home`}>
+        <Wordmark size="md" />
       </a>
+      <p class="footer__tagline serif-italic">{brand.tagline}</p>
 
-      <div class="footer__newsletter">
+      <div class="footer__newsletter" id={newsletter.id}>
         <h2 class="h4">{newsletter.title}</h2>
         <p class="body">{newsletter.body}</p>
         <form class="footer__form" method="POST" action={newsletter.action || undefined} data-newsletter>
@@ -51,32 +48,20 @@ const credit = brand.credit;
     </div>
   </div>
 
-  {credit && credit.name && (
-    <div class="footer__bottom">
-      <div class="footer__credit container--wide">
-        <span class="dim">{credit.label}</span>
-        <a class="footer__author" href={credit.url} target="_blank" rel="noopener">
-          <Image src={credit.avatar} alt="" width={48} height={48} class="footer__avatar" />
-          <span>{credit.name}</span>
-        </a>
-      </div>
+  <div class="footer__bottom">
+    <div class="footer__bottom-inner container--wide">
+      <span class="tiny muted">{footer.copyright}</span>
+      <span class="tiny dim">{footer.artNote}</span>
     </div>
-  )}
+  </div>
 </footer>
 
 <style>
   .footer {
     position: relative;
-    overflow: hidden;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-  .footer :global(.footer__glow) {
-    -webkit-mask-image: radial-gradient(60% 80% at 75% 100%, #000 0%, transparent 100%);
-    mask-image: radial-gradient(60% 80% at 75% 100%, #000 0%, transparent 100%);
+    box-shadow: inset 0 1px 0 var(--rule);
   }
   .footer__main {
-    position: relative;
-    z-index: 1;
     display: flex;
     justify-content: space-between;
     gap: 64px;
@@ -85,35 +70,40 @@ const credit = brand.credit;
   .footer__brand {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    max-width: 420px;
+    gap: 8px;
+    max-width: 440px;
   }
-  .footer__logo {
+  .footer__home {
     display: inline-flex;
-    color: #fff;
+  }
+  .footer__tagline {
+    font-size: 20px;
+    color: var(--text-muted);
   }
   .footer__newsletter {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 32px;
+    scroll-margin-top: calc(var(--nav-h) + 24px);
   }
   .footer__form {
     display: flex;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 8px;
   }
   .footer__input {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
-    height: 44px;
+    min-height: 46px;
     padding: 0 14px;
     border: 0;
     border-radius: var(--radius-btn);
-    background: var(--surface-2);
-    box-shadow: inset 0 0 0 1px var(--border);
-    color: #fff;
+    background: var(--well);
+    box-shadow: inset 0 0 0 1px var(--rule);
+    color: var(--text);
     font: inherit;
-    font-size: 14px;
+    font-size: 15px;
   }
   .footer__input::placeholder {
     color: var(--text-dim);
@@ -123,100 +113,86 @@ const credit = brand.credit;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
   }
   .footer__submit {
-    height: 44px;
-    padding: 0 16px;
+    height: 46px;
+    padding: 0 18px;
     border-radius: var(--radius-btn);
-    background: var(--primary);
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    font-size: 15px;
+    font-weight: 600;
     white-space: nowrap;
-    box-shadow: 0 0 0 1px var(--primary-ring);
     transition: background-color 0.2s ease;
   }
   .footer__submit:hover {
-    background: var(--primary-hover);
+    background: var(--btn-bg-hover);
   }
 
   .footer__columns {
     display: flex;
-    gap: 40px;
-    padding-top: 4px;
+    gap: 48px;
+    padding-top: 6px;
   }
   .footer__col {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    min-width: 96px;
+    gap: 14px;
+    min-width: 110px;
   }
   .footer__col-title {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-variation-settings: 'SOFT' 60, 'WONK' 0;
+    font-size: 17px;
   }
   .footer__links {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
   .footer__links a {
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text-muted);
     transition: color 0.2s ease;
   }
   .footer__links a:hover {
-    color: #fff;
+    color: var(--link);
   }
 
   .footer__bottom {
     position: relative;
     z-index: 1;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 var(--rule);
   }
-  .footer__credit {
+  .footer__bottom-inner {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-block: 20px;
-    font-size: 13px;
-  }
-  .footer__author {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 500;
-  }
-  .footer :global(.footer__avatar) {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    object-fit: cover;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 18px;
   }
 
   @media (max-width: 809.98px) {
     .footer__main {
-      flex-direction: column-reverse;
+      flex-direction: column;
       gap: 40px;
-      padding-block: 56px 48px;
+      padding-block: 48px 40px;
     }
     .footer__brand {
       max-width: none;
-      gap: 32px;
     }
     .footer__columns {
+      gap: 32px;
+    }
+    .footer__form {
       flex-direction: column;
-      gap: 28px;
     }
-    .footer__links {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 12px 20px;
+    .footer__input {
+      flex: none;
+      width: 100%;
     }
-    .footer__links a {
-      font-size: 15px;
-    }
-    .footer__credit {
-      justify-content: center;
+    .footer__bottom-inner {
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
     }
   }
 </style>

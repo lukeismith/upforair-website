@@ -3,8 +3,9 @@ import Apple from './icons/Apple.astro';
 
 interface Props {
   href?: string;
-  size?: 'sm' | 'md';
-  variant?: 'primary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  /** ink: the primary button. apricot: the warm accent. outlined: a hairline. text: terracotta text only. */
+  variant?: 'ink' | 'apricot' | 'outlined' | 'text';
   /** Show the Apple glyph before the label. */
   apple?: boolean;
   block?: boolean;
@@ -16,7 +17,7 @@ interface Props {
 const {
   href,
   size = 'md',
-  variant = 'primary',
+  variant = 'ink',
   apple = false,
   block = false,
   type = 'button',
@@ -46,48 +47,70 @@ const external = href?.startsWith('http');
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 18px;
+    padding: 13px 20px;
     border-radius: var(--radius-btn);
-    background: var(--primary);
-    color: #fff;
-    font-size: 14px;
-    line-height: 18px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
     white-space: nowrap;
-    box-shadow:
-      0 4px 10px -2px rgba(0, 0, 0, 0.05),
-      0 2px 2px -1px rgba(0, 0, 0, 0.1),
-      0 0 0 1px var(--primary-ring);
     transition:
       background-color 0.2s ease,
+      color 0.2s ease,
       transform 0.2s var(--ease-out),
       box-shadow 0.2s ease;
   }
   .btn:hover {
-    background: var(--primary-hover);
+    background: var(--btn-bg-hover);
   }
   .btn:active {
-    transform: scale(0.98);
+    transform: scale(0.985);
   }
   .btn--sm {
-    padding: 9px 13px;
+    padding: 9px 14px;
     border-radius: var(--radius-btn-sm);
+    font-size: 15px;
+    line-height: 18px;
   }
-  .btn--ghost {
-    background: var(--surface-2);
-    box-shadow: 0 0 0 1px var(--border);
+  .btn--lg {
+    padding: 16px 24px;
+    font-size: 17px;
+    min-height: 52px;
   }
-  .btn--ghost:hover {
-    background: rgba(255, 255, 255, 0.12);
+  .btn--apricot {
+    background: var(--apricot);
+    color: #1f1a17;
+  }
+  .btn--apricot:hover {
+    background: #f3b071;
+  }
+  .btn--outlined {
+    background: transparent;
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--border-strong);
+  }
+  .btn--outlined:hover {
+    background: var(--well);
+  }
+  .btn--text {
+    padding-inline: 4px;
+    background: transparent;
+    color: var(--link);
+  }
+  .btn--text:hover {
+    background: transparent;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   .btn--block {
     width: 100%;
   }
   .btn :global(.btn__icon) {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     flex: none;
-    margin-top: -1px;
+    margin-top: -2px;
   }
 </style>

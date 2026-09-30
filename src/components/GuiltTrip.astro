@@ -1,0 +1,267 @@
+---
+/**
+ * The Guilt trip, as the app shows it: the bunny at the edge of its hole says one
+ * line, and you choose. One reply turns back, the other carries on. Here the two
+ * replies shuffle, just as in the app, so you have to read them.
+ */
+import Tag from './Tag.astro';
+import sceneGuilt from '../assets/art/scene-guilt.svg?url';
+import sceneRelieved from '../assets/art/scene-relieved.svg?url';
+import sceneInHole from '../assets/art/scene-in-hole.svg?url';
+import { guiltTrip } from '../data/site';
+
+const first = guiltTrip.lines[0];
+---
+
+<section class="section guilt" aria-labelledby="guilt-title">
+  <div class="container guilt__inner">
+    <div class="guilt__copy" data-appear>
+      <Tag>{guiltTrip.tag}</Tag>
+      <h2 id="guilt-title" class="h2" set:html={guiltTrip.title} />
+      <p class="lead">{guiltTrip.body}</p>
+      <button class="guilt__another" type="button" data-guilt-another>
+        <svg class="pic"><use href="#p-carrot"></use></svg>
+        {guiltTrip.reshuffle}
+      </button>
+    </div>
+
+    <div class="card guilt__stage" data-appear data-guilt data-lines={JSON.stringify(guiltTrip.lines)} data-landing={JSON.stringify(guiltTrip.landing)}>
+      <div class="guilt__pause" data-guilt-pause>
+        <div class="guilt__bubble">
+          <span class="eyebrow">{guiltTrip.bubbleEyebrow}</span>
+          <p class="guilt__line" data-guilt-line>{first.say}</p>
+        </div>
+        <img class="guilt__scene" src={sceneGuilt} alt="" width="200" height="130" loading="lazy" />
+        <div class="guilt__replies" data-guilt-replies>
+          <button type="button" class="guilt__reply" data-reply="stay">{first.stay}</button>
+          <button type="button" class="guilt__reply" data-reply="go">{first.go}</button>
+        </div>
+      </div>
+
+      <div class="guilt__landing" data-guilt-landing hidden>
+        <img class="guilt__scene" data-landing-scene data-relieved={sceneRelieved} data-hole={sceneInHole} src={sceneRelieved} alt="" width="200" height="130" loading="lazy" />
+        <p class="guilt__landing-line serif-italic" data-landing-line></p>
+        <p class="small muted" data-landing-note></p>
+        <button type="button" class="guilt__again" data-guilt-again>Try another</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .guilt__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 64px;
+  }
+  .guilt__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .guilt__another {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    color: var(--link);
+    font-weight: 600;
+  }
+  .guilt__another:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .guilt__stage {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    min-height: 420px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .guilt__pause,
+  .guilt__landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .guilt__bubble {
+    position: relative;
+    width: 100%;
+    padding: 16px 18px 18px;
+    border-radius: 16px;
+    background: var(--solid);
+    box-shadow: inset 0 0 0 1.5px var(--ink);
+  }
+  .guilt__bubble::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -9px;
+    width: 16px;
+    height: 16px;
+    transform: translateX(-50%) rotate(45deg);
+    background: var(--solid);
+    border-right: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .guilt__line {
+    margin-top: 6px;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-variation-settings: 'SOFT' 60, 'WONK' 0;
+    font-size: 23px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    min-height: 2.4em;
+  }
+  .guilt__scene {
+    width: 220px;
+    height: auto;
+  }
+  .guilt__replies {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+  .guilt__reply {
+    padding: 13px 14px;
+    border-radius: var(--radius-btn);
+    box-shadow: inset 0 0 0 1px var(--border-strong);
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.25;
+    text-align: center;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s var(--ease-out);
+  }
+  .guilt__reply:hover {
+    background: var(--well);
+  }
+  .guilt__reply:active {
+    transform: scale(0.98);
+  }
+  .guilt__landing-line {
+    font-size: 26px;
+    text-align: center;
+  }
+  .guilt__again {
+    color: var(--link);
+    font-weight: 600;
+  }
+  .guilt__again:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 1199.98px) {
+    .guilt__inner {
+      gap: 40px;
+    }
+  }
+  @media (max-width: 809.98px) {
+    .guilt__inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .guilt__stage {
+      min-height: 0;
+      padding: 22px 18px;
+    }
+    .guilt__line {
+      font-size: 20px;
+    }
+  }
+</style>
+
+<script>
+  type Line = { say: string; go: string; stay: string };
+
+  for (const stage of document.querySelectorAll<HTMLElement>('[data-guilt]')) {
+    const lines = JSON.parse(stage.dataset.lines ?? '[]') as Line[];
+    const landingLines = JSON.parse(stage.dataset.landing ?? '[]') as string[];
+    const pause = stage.querySelector<HTMLElement>('[data-guilt-pause]')!;
+    const landing = stage.querySelector<HTMLElement>('[data-guilt-landing]')!;
+    const lineEl = stage.querySelector<HTMLElement>('[data-guilt-line]')!;
+    const replies = stage.querySelector<HTMLElement>('[data-guilt-replies]')!;
+    const landingLine = stage.querySelector<HTMLElement>('[data-landing-line]')!;
+    const landingNote = stage.querySelector<HTMLElement>('[data-landing-note]')!;
+    const landingScene = stage.querySelector<HTMLImageElement>('[data-landing-scene]')!;
+    const another = stage.closest('section')?.querySelector<HTMLButtonElement>('[data-guilt-another]');
+    const again = stage.querySelector<HTMLButtonElement>('[data-guilt-again]')!;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let index = 0;
+    let typing: number | undefined;
+
+    const typeLine = (text: string) => {
+      window.clearInterval(typing);
+      if (reduceMotion) {
+        lineEl.textContent = text;
+        return;
+      }
+      lineEl.textContent = '';
+      let i = 0;
+      typing = window.setInterval(() => {
+        i += 1;
+        lineEl.textContent = text.slice(0, i);
+        if (i >= text.length) window.clearInterval(typing);
+      }, 1000 / 15);
+    };
+
+    const show = (line: Line) => {
+      // The two replies look the same and swap places at random, so you have to read them.
+      // The buttons stay in place (they carry the scoped styles); only their words move.
+      const buttons = Array.from(replies.querySelectorAll<HTMLButtonElement>('[data-reply]'));
+      const order: Array<'stay' | 'go'> = Math.random() < 0.5 ? ['stay', 'go'] : ['go', 'stay'];
+      buttons.forEach((btn, i) => {
+        const kind = order[i] ?? 'stay';
+        btn.dataset.reply = kind;
+        btn.textContent = line[kind];
+      });
+      landing.hidden = true;
+      pause.hidden = false;
+      typeLine(line.say);
+    };
+
+    const next = () => {
+      index = (index + 1) % lines.length;
+      show(lines[index]);
+    };
+
+    replies.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-reply]');
+      if (!btn) return;
+      const stayed = btn.dataset.reply === 'stay';
+      landingScene.src = stayed ? landingScene.dataset.relieved! : landingScene.dataset.hole!;
+      landingLine.textContent = stayed
+        ? landingLines[Math.floor(Math.random() * landingLines.length)]
+        : 'Down we go. Back up at 3:40.';
+      landingNote.textContent = stayed
+        ? 'Nothing started. Turning back isn’t an unlock.'
+        : 'In the app, your rabbit holes open until the clock time you chose.';
+      pause.hidden = true;
+      landing.hidden = false;
+    });
+
+    again.addEventListener('click', next);
+    another?.addEventListener('click', next);
+
+    // Type the first line once the card scrolls into view.
+    new IntersectionObserver(
+      ([entry], observer) => {
+        if (!entry.isIntersecting) return;
+        show(lines[0]);
+        observer.disconnect();
+      },
+      { threshold: 0.4 },
+    ).observe(stage);
+  }
+</script>

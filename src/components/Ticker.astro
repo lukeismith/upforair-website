@@ -1,0 +1,88 @@
+---
+/**
+ * A slow marquee of ledger lines under the hero: the activity first, the minutes
+ * second, the way every earning surface in the app reads.
+ */
+import { ticker } from '../data/site';
+
+const items = [...ticker.items, ...ticker.items];
+---
+
+<section class="ticker-section" aria-label="Examples of minutes made">
+  <div class="ticker-section__inner" data-appear="fade">
+    <p class="eyebrow text-center">{ticker.label}</p>
+    <div class="ticker" data-ticker>
+      <div class="ticker__track">
+        {items.map((item, i) => (
+          <span class="ticker__item" aria-hidden={i >= ticker.items.length ? 'true' : undefined}>
+            <svg class="pic"><use href={`#p-${item.icon}`}></use></svg>
+            <span>{item.text}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ticker-section {
+    padding-block: 56px 24px;
+  }
+  .ticker-section__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: min(100% - 2 * var(--gutter), 900px);
+    margin-inline: auto;
+  }
+  .ticker {
+    width: 100%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .ticker__track {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    width: max-content;
+    animation: ticker 40s linear infinite;
+  }
+  .ticker.is-paused .ticker__track {
+    animation-play-state: paused;
+  }
+  .ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-variation-settings: 'SOFT' 60, 'WONK' 0;
+    font-size: 21px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .ticker__item .pic {
+    color: var(--terracotta);
+  }
+  @keyframes ticker {
+    to {
+      transform: translateX(calc(-50% - 20px));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      entry.target.classList.toggle('is-paused', !entry.isIntersecting);
+    }
+  });
+  document.querySelectorAll('[data-ticker]').forEach((el) => observer.observe(el));
+</script>

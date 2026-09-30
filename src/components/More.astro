@@ -1,0 +1,82 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import Tag from './Tag.astro';
+import { more } from '../data/site';
+---
+
+<section class="section more" id="more" aria-labelledby="more-title">
+  <div class="container--wide container">
+    <SectionHeader tag={more.tag} title={more.title} subtitle={more.subtitle} />
+
+    <ul class="more__grid">
+      {more.items.map((item, i) => (
+        <li class="card more__card" data-appear style={`--appear-delay:${(i % 3) * 0.08}s`}>
+          <span class="more__icon"><svg class="pic"><use href={`#p-${item.icon}`}></use></svg></span>
+          <div class="more__text">
+            <h3 class="h4 more__title">
+              {item.title}
+              {'badge' in item && item.badge && <Tag tone="apricot">{item.badge}</Tag>}
+            </h3>
+            <p class="body more__body">{item.body}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .more__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 56px;
+  }
+  .more__card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 26px 24px;
+  }
+  .more__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: var(--well);
+    color: var(--ink);
+  }
+  .more__icon .pic {
+    width: 22px;
+    height: 22px;
+  }
+  .more__text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .more__title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .more__body {
+    font-size: 15.5px;
+  }
+
+  @media (max-width: 1199.98px) {
+    .more__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 809.98px) {
+    .more__grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 40px;
+    }
+  }
+</style>

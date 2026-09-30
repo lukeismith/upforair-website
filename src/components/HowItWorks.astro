@@ -1,37 +1,35 @@
 ---
-import { Image } from 'astro:assets';
 import SectionHeader from './SectionHeader.astro';
 import Glow from './Glow.astro';
-import Logo from './icons/Logo.astro';
-import glowPurple from '../assets/backgrounds/glow-purple.jpg';
-import addTasks from '../assets/illustrations/add-tasks.png';
-import trackComplete from '../assets/illustrations/track-complete.png';
+import sceneInHole from '../assets/art/scene-in-hole.svg?url';
+import sceneWalk from '../assets/art/scene-walk.svg?url';
+import sceneClimbOut from '../assets/art/scene-climb-out.svg?url';
 import { howItWorks } from '../data/site';
 
-const art = { 'add-tasks': addTasks, 'track-complete': trackComplete } as const;
+const art: Record<string, string> = {
+  'scene-in-hole': sceneInHole,
+  'scene-walk': sceneWalk,
+  'scene-climb-out': sceneClimbOut,
+};
 ---
 
 <section class="section how" id="how-it-works" aria-labelledby="how-title">
   <div class="container">
     <SectionHeader tag={howItWorks.tag} title={howItWorks.title} subtitle={howItWorks.subtitle} />
 
-    <div class="how__grid">
-      <Glow src={glowPurple} opacity={0.8} class="how__glow" />
+    <ol class="how__grid">
+      <Glow color="var(--terracotta)" x="50%" y="40%" width="80%" height="70%" opacity={0.14} />
       {howItWorks.steps.map((step, i) => (
-        <article class="card how__card" data-appear style={`--appear-delay:${i * 0.1}s`}>
+        <li class="card how__card" data-appear style={`--appear-delay:${i * 0.1}s`}>
           <span class="how__number" aria-hidden="true">{i + 1}</span>
           <div class="how__art">
-            {step.art === 'logo' ? (
-              <Logo size={110} class="how__logo" />
-            ) : (
-              <Image src={art[step.art]} alt="" width={364} class="how__image" />
-            )}
+            <img src={art[step.art]} alt="" width="200" height="130" loading="lazy" />
           </div>
           <h3 class="h3">{step.title}</h3>
           <p class="body">{step.body}</p>
-        </article>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>
 
@@ -40,72 +38,58 @@ const art = { 'add-tasks': addTasks, 'track-complete': trackComplete } as const;
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-    margin-top: 64px;
-  }
-  .how :global(.how__glow) {
-    inset: -10% -5%;
-    border-radius: 0;
+    gap: 24px;
+    margin-top: 56px;
   }
   .how__card {
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    min-height: 493px;
-    padding: 40px 24px;
-    overflow: visible;
+    gap: 10px;
+    padding: 28px 24px 28px;
   }
   .how__number {
     position: absolute;
     top: 0;
-    left: 50%;
+    left: 24px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 32px;
-    transform: translate(-50%, -50%);
-    border-radius: 80px;
-    background: var(--surface-3);
+    min-width: 34px;
+    height: 26px;
+    padding-inline: 10px;
+    transform: translateY(-50%);
+    border-radius: var(--radius-pill);
+    background: var(--well);
     box-shadow: 0 0 0 1px var(--border);
+    font-family: var(--font-serif);
+    font-weight: 600;
     font-size: 14px;
-    font-weight: 500;
   }
   .how__art {
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex: 1;
-    min-height: 240px;
-    margin-bottom: 20px;
+    padding: 12px 0 8px;
   }
-  .how :global(.how__logo) {
-    opacity: 0.08;
-  }
-  .how :global(.how__image) {
+  .how__art img {
     width: 100%;
-    max-width: 288px;
+    max-width: 240px;
     height: auto;
+  }
+  .how__card .h3 {
+    margin-top: 6px;
   }
 
   @media (max-width: 1199.98px) {
     .how__grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: 32px 32px;
     }
   }
   @media (max-width: 809.98px) {
     .how__grid {
       grid-template-columns: 1fr;
-      gap: 40px;
-      margin-top: 48px;
-    }
-    .how__card {
-      min-height: 0;
-    }
-    .how__art {
-      min-height: 200px;
+      gap: 28px;
+      margin-top: 44px;
     }
   }
 </style>

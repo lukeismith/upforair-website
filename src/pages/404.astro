@@ -2,14 +2,16 @@
 import Base from '../layouts/Base.astro';
 import Tag from '../components/Tag.astro';
 import Button from '../components/Button.astro';
+import sceneThink from '../assets/art/scene-think.svg?url';
 import { brand, notFound } from '../data/site';
 ---
 
 <Base title={`Page not found – ${brand.name}`}>
   <section class="not-found">
     <div class="container not-found__inner" data-appear>
+      <img class="not-found__scene" src={sceneThink} alt="" width="200" height="130" />
       <Tag>{notFound.tag}</Tag>
-      <h1 class="h1 not-found__title">{notFound.title}</h1>
+      <h1 class="h1 not-found__title" set:html={notFound.title} />
       <p class="lead not-found__subtitle">{notFound.subtitle}</p>
       <Button href={notFound.button.href}>{notFound.button.label}</Button>
     </div>
@@ -27,12 +29,15 @@ import { brand, notFound } from '../data/site';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 22px;
     text-align: center;
+  }
+  .not-found__scene {
+    width: 220px;
+    height: auto;
   }
   .not-found__title {
     max-width: 640px;
-    text-wrap: balance;
   }
   .not-found__subtitle {
     max-width: 480px;
