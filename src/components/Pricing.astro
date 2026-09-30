@@ -1,0 +1,241 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import Tag from './Tag.astro';
+import Button from './Button.astro';
+import Glow from './Glow.astro';
+import Check from './icons/Check.astro';
+import glowPink from '../assets/backgrounds/glow-pink.jpg';
+import { pricing } from '../data/site';
+---
+
+<section class="section pricing" id="pricing" aria-labelledby="pricing-title" data-pricing data-billing="annual">
+  <div class="container">
+    <SectionHeader tag={pricing.tag} title={pricing.title} subtitle={pricing.subtitle} />
+
+    <div class="pricing__toggle" data-appear="fade">
+      <button class="pricing__label" type="button" data-billing-set="monthly">{pricing.toggle.monthly}</button>
+      <label class="switch">
+        <span class="sr-only">Bill annually</span>
+        <input type="checkbox" role="switch" checked data-billing-toggle />
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+      </label>
+      <button class="pricing__label" type="button" data-billing-set="annual">{pricing.toggle.annual}</button>
+      <Tag>{pricing.toggle.badge}</Tag>
+    </div>
+
+    <div class="pricing__grid">
+      <Glow src={glowPink} hue={300} opacity={0.75} class="pricing__glow" />
+      {pricing.plans.map((plan, i) => (
+        <article class="card plan" data-appear style={`--appear-delay:${i * 0.1}s`}>
+          <div class="plan__top">
+            <h3 class="plan__name">{plan.name}</h3>
+            <p class="plan__price">
+              <span class="plan__amount" data-price data-monthly={`$${plan.monthly}`} data-annual={`$${plan.annual}`}>
+                ${plan.annual}
+              </span><span class="plan__period">/month</span>
+            </p>
+            <p class="body">{plan.description}</p>
+          </div>
+
+          <div class="plan__cta">
+            <Button href={plan.cta.href} apple block>{plan.cta.label}</Button>
+            <p class="tiny muted plan__note" data-annual-note>{pricing.annualNote}</p>
+          </div>
+
+          <div class="plan__features">
+            <p class="small">{plan.featuresLabel}</p>
+            <ul class="plan__list">
+              {plan.features.map((f) => (
+                <li><Check class="plan__check" /><span>{f}</span></li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 48px;
+  }
+  .pricing__label {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+  .pricing__label:hover {
+    color: #fff;
+  }
+  [data-billing='annual'] .pricing__label[data-billing-set='annual'],
+  [data-billing='monthly'] .pricing__label[data-billing-set='monthly'] {
+    color: #fff;
+  }
+
+  /* Switch */
+  .switch {
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+  }
+  .switch input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .switch__track {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    transition: background-color 0.25s ease;
+  }
+  .switch__thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .switch input:checked + .switch__track {
+    background: var(--primary);
+  }
+  .switch input:checked + .switch__track .switch__thumb {
+    transform: translateX(20px);
+  }
+  .switch input:focus-visible + .switch__track {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+  }
+
+  /* Cards */
+  .pricing__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    width: min(100%, 968px);
+    margin: 32px auto 0;
+  }
+  .pricing :global(.pricing__glow) {
+    inset: -15% -10%;
+    border-radius: 0;
+  }
+  .plan {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 48px 32px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .plan__top {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .plan__name {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .plan__price {
+    display: flex;
+    align-items: baseline;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-weight: 500;
+  }
+  .plan__amount {
+    font-size: 48px;
+  }
+  .plan__period {
+    font-size: 24px;
+  }
+  .plan__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  .plan__note {
+    transition: opacity 0.2s ease;
+  }
+  [data-billing='monthly'] .plan__note {
+    opacity: 0;
+  }
+  .plan__features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .plan__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .plan__list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  .pricing :global(.plan__check) {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  @media (max-width: 809.98px) {
+    .pricing__grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .plan {
+      padding: 40px 24px;
+    }
+    .pricing__toggle {
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-pricing]')) {
+    const toggle = root.querySelector<HTMLInputElement>('[data-billing-toggle]');
+    if (!toggle) continue;
+
+    const apply = () => {
+      const annual = toggle.checked;
+      root.dataset.billing = annual ? 'annual' : 'monthly';
+      root.querySelectorAll<HTMLElement>('[data-price]').forEach((el) => {
+        el.textContent = (annual ? el.dataset.annual : el.dataset.monthly) ?? '';
+      });
+    };
+
+    toggle.addEventListener('change', apply);
+    root.querySelectorAll<HTMLButtonElement>('[data-billing-set]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        toggle.checked = btn.dataset.billingSet === 'annual';
+        apply();
+      });
+    });
+    apply();
+  }
+</script>

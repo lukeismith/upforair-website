@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeader from './SectionHeader.astro';
+import Glow from './Glow.astro';
+import Star from './icons/Star.astro';
+import glowViolet from '../assets/backgrounds/glow-violet.jpg';
+import { testimonials } from '../data/site';
+---
+
+<section class="section testimonials" id="testimonials" aria-labelledby="testimonials-title">
+  <div class="container--wide container">
+    <SectionHeader tag={testimonials.tag} title={testimonials.title} subtitle={testimonials.subtitle} />
+
+    <div class="testimonials__grid">
+      <Glow src={glowViolet} opacity={0.35} class="testimonials__glow" />
+      {testimonials.items.map((t, i) => (
+        <figure class="card card--panel testimonial" data-appear style={`--appear-delay:${(i % 3) * 0.08}s`}>
+          <div class="testimonial__stars" aria-label="Five out of five stars">
+            {Array.from({ length: 5 }).map((_, s) => (
+              <Star class="testimonial__star" style={`--s:${s}`} />
+            ))}
+          </div>
+          <blockquote class="testimonial__quote">{t.quote}</blockquote>
+          <figcaption class="testimonial__author">
+            <Image src={t.avatar} alt="" width={72} height={72} class="testimonial__avatar" />
+            <span class="testimonial__meta">
+              <span class="testimonial__name">{t.name}</span>
+              <span class="testimonial__role">{t.role}</span>
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .testimonials :global(.testimonials__glow) {
+    inset: -20% -10%;
+    border-radius: 0;
+  }
+  .testimonial {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: 24px;
+  }
+  .testimonial__stars {
+    display: flex;
+    gap: 3px;
+  }
+  .testimonials :global(.testimonial__star) {
+    width: 14px;
+    height: 14px;
+  }
+  .js .testimonial :global(.testimonial__star) {
+    opacity: 0;
+    transform: scale(0.4);
+    transition:
+      opacity 0.4s ease,
+      transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: calc(0.2s + var(--s) * 0.08s);
+  }
+  .js .testimonial.is-visible :global(.testimonial__star) {
+    opacity: 1;
+    transform: none;
+  }
+  .testimonial__quote {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+  .testimonial__author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+  }
+  .testimonials :global(.testimonial__avatar) {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px var(--border);
+  }
+  .testimonial__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .testimonial__name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .testimonial__role {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 1199.98px) {
+    .testimonials__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 809.98px) {
+    .testimonials__grid {
+      grid-template-columns: 1fr;
+      margin-top: 48px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js .testimonial :global(.testimonial__star) {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

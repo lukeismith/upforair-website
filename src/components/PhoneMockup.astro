@@ -1,0 +1,328 @@
+---
+/**
+ * The "Taskflow" phone in the hero. A port of the template's code component:
+ * CSS-drawn titanium frame, a static task list, a gradient progress bar and a
+ * subtle pointer-driven 3D tilt that eases back to rest when the cursor stops.
+ */
+import { hero } from '../data/site';
+
+const { phone } = hero;
+---
+
+<div class="phone" data-phone role="img" aria-label={`${phone.appTitle} preview inside a titanium iPhone`}>
+  <div class="phone__body" data-phone-body>
+    <div class="phone__frame"></div>
+    <div class="phone__btn phone__btn--left"></div>
+    <div class="phone__btn phone__btn--right-1"></div>
+    <div class="phone__btn phone__btn--right-2"></div>
+
+    <div class="phone__screen">
+      <div class="phone__island">
+        <span class="phone__cam"></span>
+        <span class="phone__sensor"></span>
+      </div>
+      <div class="phone__glare"></div>
+
+      <div class="phone__content">
+        <div class="phone__app-title">{phone.appTitle}</div>
+        <div class="phone__divider"></div>
+
+        {phone.tasks.map((task, i) => (
+          <div
+            class:list={[
+              'phone__task',
+              { 'phone__task--done': i < phone.doneCount, 'phone__task--active': i === phone.activeIndex },
+            ]}
+          >
+            <span class="phone__radio"></span>
+            <span class="phone__task-label">{task}</span>
+          </div>
+        ))}
+
+        <div class="phone__spacer"></div>
+        <div class="phone__progress">
+          <div class="phone__progress-bar" style={`width:${phone.progress}%`}></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone__highlight"></div>
+  </div>
+</div>
+
+<style>
+  .phone {
+    --frame: linear-gradient(145deg, #2d2f35 0%, #545860 28%, #24262c 64%, #14151a 100%);
+    --frame-border: rgba(255, 255, 255, 0.18);
+    --side-glow: rgba(255, 255, 255, 0.2);
+
+    position: relative;
+    width: 100%;
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    perspective: 1400px;
+  }
+  .phone__body {
+    position: relative;
+    width: min(52%, 330px);
+    aspect-ratio: 1 / 2.03;
+    transform-style: preserve-3d;
+    filter: drop-shadow(0 60px 80px rgba(0, 0, 0, 0.5)) drop-shadow(0 25px 35px rgba(0, 0, 0, 0.35));
+    will-change: transform;
+  }
+  .phone__frame {
+    position: absolute;
+    inset: 0;
+    border-radius: 52px;
+    background: var(--frame);
+    border: 1px solid var(--frame-border);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+      inset 2px 0 8px rgba(255, 255, 255, 0.15),
+      inset -4px 0 10px rgba(0, 0, 0, 0.35);
+  }
+  .phone__btn {
+    position: absolute;
+    width: 4px;
+    border-radius: 4px;
+    opacity: 0.75;
+  }
+  .phone__btn--left {
+    left: -3px;
+    top: 30%;
+    height: 70px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(20, 20, 20, 0.4));
+  }
+  .phone__btn--right-1,
+  .phone__btn--right-2 {
+    right: -3px;
+    height: 92px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(20, 20, 20, 0.35));
+  }
+  .phone__btn--right-1 {
+    top: 27%;
+  }
+  .phone__btn--right-2 {
+    top: 43%;
+  }
+  .phone__screen {
+    position: absolute;
+    inset: 9px;
+    border-radius: 44px;
+    overflow: hidden;
+    background: linear-gradient(165deg, #101113 0%, #050506 62%, #020203 100%);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+      inset 0 30px 60px rgba(255, 255, 255, 0.035),
+      inset 0 -30px 60px rgba(0, 0, 0, 0.4);
+  }
+  .phone__island {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    z-index: 6;
+    width: 37%;
+    height: 32px;
+    transform: translateX(-50%);
+    border-radius: 18px;
+    background: linear-gradient(180deg, #121315 0%, #070709 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 1px 0 rgba(0, 0, 0, 0.8);
+  }
+  .phone__cam {
+    position: absolute;
+    left: 14px;
+    top: 11px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(12, 20, 36, 0.9);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.45);
+  }
+  .phone__sensor {
+    position: absolute;
+    right: 14px;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(28, 28, 28, 0.95);
+  }
+  .phone__glare {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 65% at 5% 0%,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.01) 42%,
+      rgba(255, 255, 255, 0) 70%
+    );
+  }
+  .phone__content {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 54px;
+    bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    text-align: left;
+  }
+  .phone__app-title {
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .phone__divider {
+    height: 1px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.09);
+  }
+  .phone__task {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    margin-bottom: 7px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .phone__task--active {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    border-color: var(--accent);
+    box-shadow: 0 8px 18px rgba(139, 92, 246, 0.2);
+  }
+  .phone__radio {
+    flex: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+  }
+  .phone__task--done .phone__radio {
+    border-color: var(--accent);
+    background: radial-gradient(circle at 30% 30%, var(--accent), #111);
+  }
+  .phone__task-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .phone__task--active .phone__task-label {
+    color: #fff;
+  }
+  .phone__spacer {
+    flex: 1;
+  }
+  .phone__progress {
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .phone__progress-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    box-shadow: 0 0 14px rgba(139, 92, 246, 0.5);
+  }
+  .phone__highlight {
+    position: absolute;
+    inset: 2px;
+    border-radius: 50px;
+    border-left: 1px solid var(--side-glow);
+    border-top: 1px solid var(--side-glow);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  @media (max-width: 809.98px) {
+    .phone__body {
+      width: min(72%, 300px);
+    }
+  }
+</style>
+
+<script>
+  const TILT = 12;
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-phone]')) {
+    const body = root.querySelector<HTMLElement>('[data-phone-body]');
+    if (!body) continue;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarse = window.matchMedia('(pointer: coarse)');
+    if (reduceMotion.matches || coarse.matches) continue;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let idle = true;
+    let inView = false;
+    let idleTimer: number | undefined;
+
+    const rest = () => {
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => {
+        idle = true;
+        targetX = 0;
+        targetY = 0;
+      }, 2000);
+    };
+
+    new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        if (!inView) {
+          idle = true;
+          targetX = 0;
+          targetY = 0;
+        }
+      },
+      { threshold: 0.35 },
+    ).observe(root);
+
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        if (!inView) return;
+        const nx = Math.max(-1, Math.min(1, (e.clientX - innerWidth / 2) / (innerWidth / 2)));
+        const ny = Math.max(-1, Math.min(1, (e.clientY - innerHeight / 2) / (innerHeight / 2)));
+        targetX = nx * TILT;
+        targetY = ny * TILT;
+        idle = false;
+        rest();
+      },
+      { passive: true },
+    );
+    window.addEventListener('blur', rest);
+    window.addEventListener('pointercancel', rest);
+    document.addEventListener('mouseleave', rest);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') rest();
+    });
+
+    const tick = () => {
+      const k = idle ? 0.045 : 0.12;
+      currentX += (targetX - currentX) * k;
+      currentY += (targetY - currentY) * k;
+      body.style.transform = `rotateX(${-currentY}deg) rotateY(${currentX}deg)`;
+      window.requestAnimationFrame(tick);
+    };
+    tick();
+  }
+</script>

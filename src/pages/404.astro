@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import Tag from '../components/Tag.astro';
+import Button from '../components/Button.astro';
+import { brand, notFound } from '../data/site';
+---
+
+<Base title={`Page not found – ${brand.name}`}>
+  <section class="not-found">
+    <div class="container not-found__inner" data-appear>
+      <Tag>{notFound.tag}</Tag>
+      <h1 class="h1 not-found__title">{notFound.title}</h1>
+      <p class="lead not-found__subtitle">{notFound.subtitle}</p>
+      <Button href={notFound.button.href}>{notFound.button.label}</Button>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    padding-block: calc(var(--nav-h) + 40px) var(--section-pad);
+  }
+  .not-found__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+  .not-found__title {
+    max-width: 640px;
+    text-wrap: balance;
+  }
+  .not-found__subtitle {
+    max-width: 480px;
+  }
+</style>

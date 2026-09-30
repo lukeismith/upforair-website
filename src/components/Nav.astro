@@ -1,0 +1,204 @@
+---
+import Logo from './icons/Logo.astro';
+import Button from './Button.astro';
+import { brand, nav, sections } from '../data/site';
+---
+
+<header class="nav" data-nav>
+  <div class="nav__bar">
+    <a href="/" class="nav__logo" aria-label={`${brand.name} home`}>
+      <Logo size={24} />
+    </a>
+
+    <nav class="nav__desktop" aria-label="Primary">
+      <a class="nav__link" href={nav.docs.href}>{nav.docs.label}</a>
+      <Button href={nav.download.href} size="sm" apple>{nav.download.label}</Button>
+    </nav>
+
+    <button
+      class="nav__burger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+      data-burger
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="nav__mobile" id="mobile-menu" data-menu>
+    <nav class="nav__mobile-inner container" aria-label="Mobile">
+      <ul class="nav__mobile-links">
+        {sections.map((s) => (
+          <li><a href={`/#${s.id}`}>{s.label}</a></li>
+        ))}
+        <li><a href={nav.docs.href}>{nav.docs.label}</a></li>
+      </ul>
+      <Button href={nav.download.href} apple block>{nav.download.label}</Button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+  }
+  .nav__bar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--nav-h);
+    padding: 24px 64px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+  }
+  .nav__logo {
+    display: inline-flex;
+    color: #fff;
+  }
+  .nav__desktop {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .nav__link {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    transition: opacity 0.2s ease;
+  }
+  .nav__link:hover {
+    opacity: 0.7;
+  }
+
+  /* Hamburger */
+  .nav__burger {
+    display: none;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+  .nav__burger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    margin-inline: auto;
+    border-radius: 7px;
+    background: #fff;
+    transition:
+      transform 0.3s var(--ease-out),
+      opacity 0.2s ease;
+  }
+  .is-open .nav__burger span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .is-open .nav__burger span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0.2);
+  }
+  .is-open .nav__burger span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Mobile menu */
+  .nav__mobile {
+    position: absolute;
+    inset: var(--nav-h) 0 auto 0;
+    z-index: 1;
+    max-height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+    transform: translateY(-12px);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      transform 0.3s var(--ease-out),
+      opacity 0.25s ease,
+      visibility 0s linear 0.3s;
+  }
+  .is-open .nav__mobile {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .nav__mobile-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-block: 8px 24px;
+  }
+  .nav__mobile-links {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav__mobile-links a {
+    display: block;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 1199.98px) {
+    .nav__bar {
+      padding-inline: 32px;
+    }
+  }
+  @media (max-width: 809.98px) {
+    .nav__bar {
+      padding-inline: 24px;
+    }
+    .nav__desktop {
+      display: none;
+    }
+    .nav__burger {
+      display: flex;
+    }
+  }
+  @media (min-width: 810px) {
+    .nav__mobile {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-nav]');
+  const burger = header?.querySelector<HTMLButtonElement>('[data-burger]');
+  const menu = header?.querySelector<HTMLElement>('[data-menu]');
+
+  if (header && burger && menu) {
+    const setOpen = (open: boolean) => {
+      header.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.documentElement.classList.toggle('menu-open', open);
+    };
+
+    burger.addEventListener('click', () => setOpen(!header.classList.contains('is-open')));
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    window.matchMedia('(min-width: 810px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>

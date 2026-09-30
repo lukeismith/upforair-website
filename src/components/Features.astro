@@ -1,0 +1,470 @@
+---
+/**
+ * Three feature tabs on the left drive an illustrated app mock-up on the
+ * right. Hovering (or tapping on touch devices) a feature switches the
+ * illustration between three states.
+ */
+import Glow from './Glow.astro';
+import Sprite from './icons/Sprite.astro';
+import glowBlue from '../assets/backgrounds/glow-blue.jpg';
+import { features } from '../data/site';
+
+const { items, illustration: ill } = features;
+---
+
+<section class="section features" id="features" aria-labelledby="features-title">
+  <Sprite />
+  <div class="container features__inner" data-features>
+    <h2 id="features-title" class="sr-only">Features</h2>
+
+    <div class="features__list" role="tablist" aria-orientation="vertical" data-appear>
+      {items.map((item, i) => (
+        <button
+          class:list={['features__item', { 'is-active': i === 0 }]}
+          type="button"
+          role="tab"
+          id={`feature-tab-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-controls="feature-illustration"
+          tabindex={i === 0 ? 0 : -1}
+          data-feature
+        >
+          <span class="h3">{item.title}</span>
+          <span class="body">{item.body}</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="features__stage" data-appear="scale">
+      <Glow src={glowBlue} hue={33} opacity={0.75} class="features__glow" />
+      <div
+        class="card mock"
+        id="feature-illustration"
+        role="tabpanel"
+        aria-label="App illustration"
+        data-illustration
+        data-state="1"
+      >
+        <div class="mock__header">
+          <div class="mock__search">
+            <svg class="mock__icon"><use href="#i-search"></use></svg>
+            <span>{ill.searchPlaceholder}</span>
+          </div>
+          <span class="mock__plus" aria-hidden="true">
+            <svg class="mock__icon"><use href="#i-plus"></use></svg>
+          </span>
+        </div>
+
+        <ul class="mock__lists">
+          {ill.lists.map((row) => (
+            <li class="mock__row">
+              <svg class="mock__icon mock__icon--row"><use href={`#i-${row.icon}`}></use></svg>
+              <span class="mock__row-label">{row.label}</span>
+              <span class="mock__count">{row.count}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mock__picker" aria-hidden="true">
+          <div class="mock__picker-row">
+            {ill.pickerIcons.map((icon, i) => (
+              <span class:list={['mock__picker-icon', { 'is-selected': i === 0 }]}>
+                <svg class="mock__icon"><use href={`#i-${icon}`}></use></svg>
+              </span>
+            ))}
+          </div>
+          <div class="mock__picker-row">
+            {ill.pickerColors.map((color, i) => (
+              <span
+                class:list={['mock__swatch', { 'is-selected': i === 0 || i === 3 }]}
+                style={`--swatch:${color}`}
+              ></span>
+            ))}
+          </div>
+        </div>
+
+        <div class="mock__new" aria-hidden="true">
+          <span class="mock__new-icon">
+            <svg class="mock__icon"><use href="#i-smiley"></use></svg>
+          </span>
+          <span class="mock__new-text">
+            <span class="mock__new-typing">{ill.typingPlaceholder}</span>
+            <span class="mock__new-final">{ill.newTask}</span>
+          </span>
+          <span class="mock__sync">
+            <svg class="mock__icon"><use href="#i-check-circle"></use></svg>
+            Synced
+          </span>
+        </div>
+
+        <svg class="mock__cursor" aria-hidden="true"><use href="#i-cursor"></use></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .features__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 504px) minmax(0, 1fr);
+    align-items: center;
+    gap: 64px;
+  }
+
+  /* --- Tabs --- */
+  .features__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .features__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 24px;
+    border-radius: var(--radius-panel);
+    text-align: left;
+    background: transparent;
+    box-shadow: inset 0 0 0 1px transparent;
+    transition:
+      background-color 0.35s var(--ease-out),
+      box-shadow 0.35s var(--ease-out);
+  }
+  .features__item .body {
+    max-width: 300px;
+  }
+  .features__item:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .features__item.is-active {
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+
+  /* --- Illustration --- */
+  .features__stage {
+    position: relative;
+  }
+  .features :global(.features__glow) {
+    inset: -25% -20%;
+    border-radius: 0;
+  }
+  .mock {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 452px;
+    padding: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .mock__icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    fill: currentColor;
+  }
+  .mock__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .mock__search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 0 0 1px var(--border);
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .mock__plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    color: var(--text-muted);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+  .mock__lists {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mock__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+    padding: 0 12px;
+    border-radius: 14px;
+    color: var(--text-muted);
+    font-size: 14px;
+    transition:
+      opacity 0.4s ease,
+      filter 0.4s ease;
+  }
+  .mock__icon--row {
+    width: 18px;
+    height: 18px;
+    color: var(--text-dim);
+  }
+  .mock__row-label {
+    flex: 1;
+  }
+  .mock__count {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* Icon & colour picker */
+  .mock__picker {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 96px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px 16px;
+    border-radius: 20px;
+    background: rgba(28, 26, 38, 0.92);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 24px 48px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    transition:
+      opacity 0.45s var(--ease-out),
+      transform 0.45s var(--ease-out);
+  }
+  .mock__picker-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .mock__picker-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.35);
+  }
+  .mock__picker-icon.is-selected {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06);
+  }
+  .mock__picker-icon .mock__icon {
+    width: 18px;
+    height: 18px;
+  }
+  .mock__swatch {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: var(--swatch);
+  }
+  .mock__swatch.is-selected::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 999px;
+    background: rgba(40, 40, 40, 0.8);
+  }
+
+  /* New task row */
+  .mock__new {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    margin-top: auto;
+    padding: 0 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px var(--border);
+    font-size: 14px;
+    transition:
+      transform 0.45s var(--ease-out),
+      opacity 0.45s ease;
+  }
+  .mock__new-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+  .mock__new-text {
+    position: relative;
+    flex: 1;
+    display: grid;
+  }
+  .mock__new-typing,
+  .mock__new-final {
+    grid-area: 1 / 1;
+    transition: opacity 0.35s ease;
+  }
+  .mock__new-typing {
+    color: var(--text-dim);
+  }
+  .mock__sync {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--success);
+    font-size: 12px;
+    opacity: 0;
+    transform: translateX(8px);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s var(--ease-out);
+  }
+  .mock__sync .mock__icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Cursor */
+  .mock__cursor {
+    position: absolute;
+    z-index: 5;
+    width: 35px;
+    height: 34px;
+    /* Percentages on both ends so the position transition can interpolate. */
+    left: var(--cx, 0%);
+    top: var(--cy, 0%);
+    transition:
+      left 0.6s var(--ease-out),
+      top 0.6s var(--ease-out);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+  }
+
+  /* --- States --- */
+  /* 1. Create in seconds: cursor on the + button, new task being typed */
+  .mock[data-state='1'] {
+    --cx: 91%;
+    --cy: 6%;
+  }
+  .mock[data-state='1'] .mock__plus {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+  .mock[data-state='1'] .mock__new-final {
+    opacity: 0;
+  }
+
+  /* 2. Organize with ease: icon & colour picker open, cursor on the smiley */
+  .mock[data-state='2'] {
+    --cx: 9%;
+    --cy: 60%;
+  }
+  .mock[data-state='2'] .mock__row {
+    opacity: 0.35;
+    filter: blur(1px);
+  }
+  .mock[data-state='2'] .mock__picker {
+    opacity: 1;
+    transform: none;
+  }
+  .mock[data-state='2'] .mock__new-typing {
+    opacity: 0;
+  }
+
+  /* 3. Sync across devices: task saved and synced */
+  .mock[data-state='3'] {
+    --cx: 80%;
+    --cy: 89%;
+  }
+  .mock[data-state='3'] .mock__new-typing {
+    opacity: 0;
+  }
+  .mock[data-state='3'] .mock__sync {
+    opacity: 1;
+    transform: none;
+  }
+  .mock[data-state='3'] .mock__new {
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  @media (max-width: 1199.98px) {
+    .features__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 40px;
+    }
+  }
+  @media (max-width: 809.98px) {
+    .features__inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .features__item .body {
+      max-width: none;
+    }
+    .mock {
+      min-height: 420px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mock * {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-features]')) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-feature]'));
+    const stage = root.querySelector<HTMLElement>('[data-illustration]');
+    if (!stage || tabs.length === 0) continue;
+
+    const activate = (index: number) => {
+      tabs.forEach((tab, i) => {
+        const active = i === index;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+      });
+      stage.dataset.state = String(index + 1);
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('pointerenter', (e) => {
+        if (e.pointerType === 'mouse') activate(i);
+      });
+      tab.addEventListener('click', () => activate(i));
+      tab.addEventListener('focus', () => activate(i));
+      tab.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+        e.preventDefault();
+        const next = (i + (e.key === 'ArrowDown' ? 1 : -1) + tabs.length) % tabs.length;
+        tabs[next].focus();
+      });
+    });
+  }
+</script>
