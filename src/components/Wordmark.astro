@@ -1,0 +1,36 @@
+---
+import Logo from './icons/Logo.astro';
+import { brand } from '../data/site';
+
+interface Props {
+  size?: 'sm' | 'md';
+  class?: string;
+}
+const { size = 'sm', class: cls } = Astro.props;
+---
+
+<span class:list={['wordmark', `wordmark--${size}`, cls]}>
+  <Logo class="wordmark__mark" size={size === 'md' ? 34 : 28} />
+  <span class="wordmark__name">{brand.name}</span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  .wordmark__name {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-variation-settings: 'SOFT' 60, 'WONK' 0;
+    font-size: 21px;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .wordmark--md .wordmark__name {
+    font-size: 26px;
+  }
+</style>

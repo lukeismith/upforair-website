@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 130" width="200" height="130" ><path d="M0 104 Q100 90 200 106 V130 H0 Z" fill="#C6DBA4"/><path d="M0 114 Q100 104 200 116 V130 H0 Z" fill="#9DBF7A"/><g transform="translate(44 6) scale(0.56)"><g transform="rotate(-12 76 60)">
+    <ellipse cx="76" cy="52" rx="16" ry="42" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+    <ellipse cx="76" cy="56" rx="7.5" ry="28" fill="#FFFBF4"/></g>
+<g transform="rotate(40 124 60)">
+    <ellipse cx="124" cy="52" rx="16" ry="42" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+    <ellipse cx="124" cy="56" rx="7.5" ry="28" fill="#FFFBF4"/></g>
+<ellipse cx="100" cy="154" rx="56" ry="40" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+<ellipse cx="100" cy="162" rx="30" ry="24" fill="#FFFBF4"/>
+<ellipse cx="78" cy="188" rx="15" ry="8" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/><ellipse cx="122" cy="188" rx="15" ry="8" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+<ellipse cx="100" cy="102" rx="50" ry="46" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+<circle cx="68" cy="116" r="8" fill="#E0553A" opacity="0.45"/><circle cx="132" cy="116" r="8" fill="#E0553A" opacity="0.45"/><path d="M70 88 L86 90" stroke="#1F1A17" stroke-width="3" stroke-linecap="round"/>
+               <path d="M114 86 L130 82" stroke="#1F1A17" stroke-width="3" stroke-linecap="round"/><path d="M77 97 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 Z" fill="#1F1A17"/><path d="M117 97 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 Z" fill="#1F1A17"/><circle cx="85.5" cy="94.5" r="2" fill="#FFFBF4"/><circle cx="125.5" cy="94.5" r="2" fill="#FFFBF4"/><path d="M94 114 Q100 110 106 114 Q103 121 100 122 Q97 121 94 114 Z" fill="#E0553A"/><path d="M100 122 v6 M94 130 q6 -2 12 1" fill="none" stroke="#1F1A17" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+               <path d="M97.75 129 h4.5 v4.5 a2 2 0 0 1 -2 2 h-0.5 a2 2 0 0 1 -2 -2 Z" fill="#FFFBF4" stroke="#1F1A17" stroke-width="1" stroke-linejoin="round"/>
+<g transform="translate(48 146) rotate(45 0 14)"><ellipse cx="0" cy="14" rx="7.5" ry="14" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/></g>
+<g transform="translate(130 118) rotate(30 0 14)"><ellipse cx="0" cy="14" rx="7.5" ry="14" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/></g></g><text x="158" y="50" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="26" fill="#1F1A17" opacity="0.7">?</text></svg>

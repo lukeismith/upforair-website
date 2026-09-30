@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Up For Air bunny"><g transform="rotate(-40 76 60)">
+    <ellipse cx="76" cy="52" rx="16" ry="42" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+    <ellipse cx="76" cy="56" rx="7.5" ry="28" fill="#FFFBF4"/></g>
+<g transform="rotate(40 124 60)">
+    <ellipse cx="124" cy="52" rx="16" ry="42" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+    <ellipse cx="124" cy="56" rx="7.5" ry="28" fill="#FFFBF4"/></g>
+<ellipse cx="100" cy="154" rx="56" ry="40" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+<ellipse cx="100" cy="162" rx="30" ry="24" fill="#FFFBF4"/>
+<g transform="translate(48 146) rotate(20 0 14)"><ellipse cx="0" cy="14" rx="7.5" ry="14" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/></g>
+<g transform="translate(152 146) rotate(-20 0 14)"><ellipse cx="0" cy="14" rx="7.5" ry="14" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/></g>
+<ellipse cx="78" cy="188" rx="15" ry="8" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/><ellipse cx="122" cy="188" rx="15" ry="8" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+<ellipse cx="100" cy="102" rx="50" ry="46" fill="#F0A35E" stroke="#1F1A17" stroke-width="3"/>
+<circle cx="68" cy="116" r="8" fill="#E0553A" opacity="0.45"/><circle cx="132" cy="116" r="8" fill="#E0553A" opacity="0.45"/><path d="M72 99 Q80 107 88 99" fill="none" stroke="#1F1A17" stroke-width="3" stroke-linecap="round"/>
+              <path d="M112 99 Q120 107 128 99" fill="none" stroke="#1F1A17" stroke-width="3" stroke-linecap="round"/><path d="M94 114 Q100 110 106 114 Q103 121 100 122 Q97 121 94 114 Z" fill="#E0553A"/><path d="M95 130 h4.5 v4.5 a2 2 0 0 1 -2 2 h-0.5 a2 2 0 0 1 -2 -2 Z M100.5 130 h4.5 v4.5 a2 2 0 0 1 -2 2 h-0.5 a2 2 0 0 1 -2 -2 Z" fill="#FFFBF4" stroke="#1F1A17" stroke-width="1" stroke-linejoin="round"/>
+               <path d="M100 122 v8.5 M93 128 Q100 133 107 128" fill="none" stroke="#1F1A17" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="600" fill="#1F1A17">
+      <text x="146" y="70" font-size="18">z</text><text x="158" y="52" font-size="24">z</text><text x="174" y="30" font-size="30">Z</text></g></svg>

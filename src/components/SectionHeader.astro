@@ -7,12 +7,13 @@ interface Props {
   title: string;
   subtitle?: string;
   as?: 'h1' | 'h2';
+  align?: 'center' | 'left';
   class?: string;
 }
-const { tag, title, subtitle, as: Heading = 'h2', class: cls } = Astro.props;
+const { tag, title, subtitle, as: Heading = 'h2', align = 'center', class: cls } = Astro.props;
 ---
 
-<div class:list={['section-header', cls]} data-appear>
+<div class:list={['section-header', `section-header--${align}`, cls]} data-appear>
   {tag && <Tag>{tag}</Tag>}
   <Heading class="h2 section-header__title" set:html={title} />
   {subtitle && <p class="lead section-header__sub">{subtitle}</p>}
@@ -22,16 +23,19 @@ const { tag, title, subtitle, as: Heading = 'h2', class: cls } = Astro.props;
   .section-header {
     display: flex;
     flex-direction: column;
+    gap: 18px;
+    max-width: 760px;
+  }
+  .section-header--center {
     align-items: center;
     text-align: center;
-    gap: 16px;
-    max-width: 760px;
     margin-inline: auto;
   }
-  .section-header__title {
-    text-wrap: balance;
+  .section-header--left {
+    align-items: flex-start;
+    text-align: left;
   }
   .section-header__sub {
-    max-width: 620px;
+    max-width: 600px;
   }
 </style>

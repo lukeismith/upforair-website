@@ -1,44 +1,47 @@
 ---
-import Logo from './icons/Logo.astro';
 import Button from './Button.astro';
+import bunnyWaving from '../assets/art/bunny-waving.svg?url';
 import { cta } from '../data/site';
 ---
 
 <section class="section cta" aria-labelledby="cta-title">
   <div class="container cta__inner" data-appear>
-    <Logo size={48} class="cta__logo" />
+    <img class="cta__bunny" src={bunnyWaving} alt="" width="200" height="200" loading="lazy" />
     <h2 id="cta-title" class="h2 cta__title" set:html={cta.title} />
     <p class="lead cta__subtitle">{cta.subtitle}</p>
     <div class="cta__actions">
-      <Button href={cta.button.href} apple>{cta.button.label}</Button>
-      <p class="tiny dim">{cta.note}</p>
+      <Button href={cta.button.href} size="lg" apple={cta.button.apple}>{cta.button.label}</Button>
+      <p class="tiny muted">{cta.note}</p>
     </div>
   </div>
 </section>
 
 <style>
+  .cta {
+    padding-bottom: calc(var(--section-pad) + 16px);
+  }
   .cta__inner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 22px;
     text-align: center;
   }
-  .cta :global(.cta__logo) {
-    color: #fff;
+  .cta__bunny {
+    width: 120px;
+    height: 120px;
   }
   .cta__title {
-    max-width: 520px;
-    text-wrap: balance;
+    max-width: 560px;
   }
   .cta__subtitle {
-    max-width: 420px;
+    max-width: 460px;
   }
   .cta__actions {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 </style>

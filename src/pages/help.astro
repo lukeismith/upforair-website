@@ -1,0 +1,145 @@
+---
+import Base from '../layouts/Base.astro';
+import { brand, help } from '../data/site';
+---
+
+<Base title={`Help – ${brand.name}`} description={help.subtitle}>
+  <section class="help">
+    <div class="container help__header" data-appear>
+      <p class="eyebrow">{help.eyebrow}</p>
+      <h1 class="h1">{help.title}</h1>
+      <p class="lead help__subtitle">{help.subtitle}</p>
+    </div>
+
+    <div class="container help__layout">
+      <aside class="help__sidebar">
+        <nav class="card help__toc" aria-label="On this page">
+          <p class="help__toc-title">{help.tocTitle}</p>
+          <ul>
+            {help.sections.map((s) => (
+              <li><a href={`#${s.id}`}>{s.title}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="help__content">
+        {help.sections.map((s) => (
+          <section class="help__section" id={s.id} data-appear>
+            <h2 class="h2 help__section-title">{s.title}</h2>
+            <dl class="help__items">
+              {s.items.map((item) => (
+                <div class="help__item">
+                  <dt class="h4">{item.q}</dt>
+                  <dd class="body">{item.a}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .help {
+    padding-block: calc(var(--nav-h) + 64px) var(--section-pad);
+  }
+  .help__header {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .help__subtitle {
+    max-width: 560px;
+  }
+  .help__layout {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 48px;
+    margin-top: 64px;
+  }
+  .help__toc {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+  }
+  .help__toc-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .help__toc ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .help__toc a {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+  .help__toc a:hover {
+    color: var(--link);
+  }
+  .help__content {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    max-width: 680px;
+  }
+  .help__section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scroll-margin-top: calc(var(--nav-h) + 24px);
+  }
+  .help__section-title {
+    font-size: 34px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .help__items {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin: 0;
+  }
+  .help__item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .help__item dd {
+    margin: 0;
+  }
+
+  @media (max-width: 809.98px) {
+    .help {
+      padding-top: calc(var(--nav-h) + 36px);
+    }
+    .help__layout {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-top: 40px;
+    }
+    .help__toc {
+      position: static;
+    }
+    .help__toc ul {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+    }
+    .help__section-title {
+      font-size: 28px;
+    }
+  }
+</style>

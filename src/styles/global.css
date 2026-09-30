@@ -1,84 +1,96 @@
 /* ------------------------------------------------------------------
-   Fonts (self-hosted, pulled from the Framer template)
+   Fonts: the app's own faces (Fraunces for anything large, Instrument
+   Sans for text), subsetted from the variable files the app bundles.
+   Both are SIL Open Font License; the licenses sit next to the files.
    ------------------------------------------------------------------ */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Regular.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-MediumItalic.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces-Italic.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
+  font-family: 'Instrument Sans';
+  src: url('/fonts/InstrumentSans.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Instrument Serif';
-  src: url('/fonts/InstrumentSerif-Italic.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'Instrument Sans';
+  src: url('/fonts/InstrumentSans-Italic.woff2') format('woff2');
+  font-weight: 400 700;
   font-style: italic;
   font-display: swap;
 }
 
 /* ------------------------------------------------------------------
-   Design tokens
+   Design tokens. A blend of the template's black, glassy surfaces and
+   the Almanac palette: cream ink, apricot and terracotta accents, and
+   the app's own type. The site is dark only; the phone screen inside
+   the hero keeps the app's paper so it reads as the product.
    ------------------------------------------------------------------ */
 :root {
+  color-scheme: dark;
+
   --bg: #000000;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-2: rgba(255, 255, 255, 0.08);
+  --paper: #000000;
+  --page: rgba(255, 255, 255, 0.04);
+  --well: rgba(255, 255, 255, 0.08);
+  --ink: #f3eadb;
+  --ink-2: rgba(243, 234, 219, 0.7);
+  --ink-3: rgba(243, 234, 219, 0.45);
+  --rule: rgba(255, 255, 255, 0.1);
+  --rule-2: rgba(255, 255, 255, 0.2);
+  --apricot: #f0a35e;
+  --apricot-3: rgba(240, 163, 94, 0.14);
+  --terracotta: #f0785c;
+  --grass: #3b4f36;
+  --grass-2: #2f3f2c;
+  --hole: #2b221c;
+  --solid: #1a1614;
+
+  /* Semantic aliases used by components */
+  --surface: var(--page);
+  --surface-2: var(--well);
   --surface-3: #171717;
-  --border: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.2);
+  --border: var(--rule);
+  --border-strong: var(--rule-2);
+  --text: var(--ink);
+  --text-muted: var(--ink-2);
+  --text-dim: var(--ink-3);
+  --accent: var(--apricot);
+  --accent-soft: var(--apricot-3);
+  --link: var(--terracotta);
 
-  --text: #ffffff;
-  --text-muted: rgba(255, 255, 255, 0.7);
-  --text-dim: rgba(255, 255, 255, 0.42);
+  /* The primary button is apricot with ink text, as the app's night surfaces */
+  --btn-bg: var(--apricot);
+  --btn-text: #1f1a17;
+  --btn-bg-hover: #f3b071;
 
-  --primary: #512feb;
-  --primary-hover: #4527d6;
-  --primary-ring: rgba(73, 48, 235, 0.12);
-  --accent: #8b5cf6;
-  --success: #34d399;
+  --font-sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
 
-  --font-sans: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-
-  --radius-card: 32px;
-  --radius-panel: 24px;
-  --radius-btn: 12px;
-  --radius-btn-sm: 10px;
+  --radius-card: 24px;
+  --radius-panel: 20px;
+  --radius-btn: 14px;
+  --radius-btn-sm: 12px;
   --radius-pill: 999px;
+  --radius-sheet: 28px;
 
   --container: 1072px;
   --container-wide: 1200px;
   --gutter: 80px;
-  --section-pad: 80px;
-  --nav-h: 84px;
+  --section-pad: 96px;
+  --nav-h: 76px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -86,6 +98,7 @@
 @media (max-width: 1199.98px) {
   :root {
     --gutter: 32px;
+    --section-pad: 80px;
   }
 }
 @media (max-width: 809.98px) {
@@ -122,8 +135,8 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 1.45;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -143,9 +156,20 @@ video {
   max-width: 100%;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+.link {
+  color: var(--link);
+}
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 button {
@@ -163,7 +187,9 @@ h3,
 h4,
 p,
 ul,
-ol {
+ol,
+figure,
+blockquote {
   margin: 0;
 }
 
@@ -174,14 +200,14 @@ ol {
 }
 
 :focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline: 2px solid var(--terracotta);
   outline-offset: 3px;
   border-radius: 6px;
 }
 
 ::selection {
-  background: rgba(81, 47, 235, 0.6);
-  color: #fff;
+  background: rgba(240, 163, 94, 0.6);
+  color: #1f1a17;
 }
 
 /* ------------------------------------------------------------------
@@ -201,51 +227,81 @@ ol {
 }
 
 /* ------------------------------------------------------------------
-   Typography
+   Typography. Fraunces carries the brand: soft, slightly wonky, with
+   optical sizes. Headings are 600; the italic accent is 500 with WONK.
    ------------------------------------------------------------------ */
+.h1,
+.h2,
+.h3,
+.h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-optical-sizing: auto;
+  font-variation-settings: 'SOFT' 60, 'WONK' 0;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
 .h1 {
-  font-size: 70px;
-  line-height: 1.1;
-  letter-spacing: -0.04em;
-  font-weight: 500;
+  font-size: 68px;
+  line-height: 1.02;
 }
 .h2 {
-  font-size: 55px;
-  line-height: 1.1;
-  letter-spacing: -0.04em;
-  font-weight: 500;
+  font-size: 50px;
+  line-height: 1.06;
 }
 .h3 {
   font-size: 24px;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 .h4 {
-  font-size: 18px;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+  font-size: 19px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+.h1 em,
+.h2 em,
+.h3 em,
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
   font-weight: 500;
+  font-variation-settings: 'SOFT' 70, 'WONK' 1;
+  letter-spacing: -0.01em;
+}
+.display {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-variation-settings: 'SOFT' 40, 'WONK' 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
 }
 .lead {
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1.5;
-  letter-spacing: -0.01em;
   color: var(--text-muted);
 }
 .body {
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.5;
   color: var(--text-muted);
 }
 .small {
-  font-size: 14px;
-  line-height: 1.5;
-  letter-spacing: -0.01em;
+  font-size: 15px;
+  line-height: 1.45;
 }
 .tiny {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.eyebrow {
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 .muted {
   color: var(--text-muted);
@@ -257,40 +313,32 @@ ol {
   text-align: center;
 }
 
-/* Italic serif accent, used inside headings (`<em>`) */
-.h1 em,
-.h2 em,
-.serif {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  font-size: 1.06em;
-  line-height: 1;
-}
-
 @media (max-width: 1199.98px) {
   .h1 {
-    font-size: 55px;
+    font-size: 56px;
   }
   .h2 {
-    font-size: 48px;
+    font-size: 44px;
   }
 }
 @media (max-width: 809.98px) {
   .h1 {
-    font-size: 40px;
+    font-size: 42px;
   }
   .h2 {
-    font-size: 40px;
+    font-size: 34px;
   }
   .h3 {
     font-size: 22px;
   }
+  .lead {
+    font-size: 17px;
+  }
 }
 
 /* ------------------------------------------------------------------
-   Surfaces
+   Surfaces. Cards are a little white over black with a hairline ring,
+   as in the template; no drop shadows.
    ------------------------------------------------------------------ */
 .card {
   position: relative;
@@ -298,25 +346,39 @@ ol {
   border-radius: var(--radius-card);
   box-shadow: inset 0 0 0 1px var(--border);
 }
-.card--panel {
-  border-radius: var(--radius-panel);
+.card--glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.hairline {
+  height: 1px;
+  background: var(--rule);
+}
+.hairline--ink {
+  background: var(--ink);
+}
+
+/* Pictograms from the sprite */
+.pic {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  fill: currentColor;
 }
 
 /* ------------------------------------------------------------------
-   Scroll-in "appear" animation. The `js` class is added to <html>
-   by an inline script, so content stays visible without JavaScript.
+   Scroll-in "appear" animation. Things settle; nothing bounces.
+   The `js` class is added to <html> by an inline script so content
+   stays visible without JavaScript.
    ------------------------------------------------------------------ */
 .js [data-appear] {
   opacity: 0.001;
-  transform: translateY(40px);
+  transform: translateY(24px);
   transition:
-    opacity 0.7s var(--ease-out),
-    transform 0.7s var(--ease-out);
+    opacity 0.6s var(--ease-out),
+    transform 0.6s var(--ease-out);
   transition-delay: var(--appear-delay, 0s);
   will-change: opacity, transform;
-}
-.js [data-appear='scale'] {
-  transform: translateY(18px) scale(0.98);
 }
 .js [data-appear='fade'] {
   transform: none;
