@@ -8,7 +8,7 @@ import { ticker } from '../data/site';
 const items = [...ticker.items, ...ticker.items];
 ---
 
-<section class="ticker-section" aria-label="Examples of minutes made">
+<section class="ticker-section" aria-label={ticker.ariaLabel}>
   <div class="ticker-section__inner" data-appear="fade">
     <p class="eyebrow text-center">{ticker.label}</p>
     <div class="ticker" data-ticker>

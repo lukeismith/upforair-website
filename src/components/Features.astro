@@ -1,13 +1,24 @@
 ---
 /**
  * Three features on the left drive an illustration on the right: the rabbit holes,
- * the day's ledger, and the limit screen. Hover (or tap) a feature to switch.
+ * the ways to earn minutes, and the screen that asks how long. Hover (or tap) a feature
+ * to switch. Each panel is an app screen on the app's own paper. Earn and the limit
+ * screen are real simulator captures, cut off below the part that matters. The
+ * simulator has no Screen Time, so its Rabbit holes page is empty, and that panel is an
+ * HTML replica of the page with the app's own words, drawn at the same scale as the
+ * captures (one app point is 1/440 of the screen's width).
  */
+import { Image } from 'astro:assets';
 import SectionHeader from './SectionHeader.astro';
 import Glow from './Glow.astro';
+import earnScreen from '../assets/screens/earn-light-top.png';
+import limitScreen from '../assets/screens/unlock-limit-15-light-top.png';
 import { features } from '../data/site';
 
 const { items, panels } = features;
+const holes = panels.holes;
+/** The screens are 360px wide at most; on a narrow phone, the viewport less the gutters and padding. */
+const screenSizes = '(max-width: 443.98px) calc(100vw - 84px), 360px';
 ---
 
 <section class="section features" id="features" aria-labelledby="features-title">
@@ -35,82 +46,88 @@ const { items, panels } = features;
 
       <div class="features__stage" data-appear>
         <Glow color="var(--apricot)" x="50%" y="50%" width="90%" height="90%" opacity={0.2} />
-        <div class="card mock" id="feature-illustration" role="tabpanel" aria-label="App illustration" data-illustration data-state="1">
-          <!-- 1 · Rabbit holes -->
+        <div class="card mock" id="feature-illustration" role="tabpanel" aria-labelledby="feature-tab-0" data-illustration data-state="1">
+          <!-- 1 · Rabbit holes (replica) -->
           <div class="mock__panel" data-panel="1">
-            <div class="mock__head">
-              <span class="mock__title">{panels.holes.title}</span>
-              <span class="mock__link">{panels.holes.edit}</span>
-            </div>
-            <div class="mock__tiles">
-              {panels.holes.tiles.map((tile) => (
-                <div class="mock__tile">
-                  <span class="mock__appicon" style={`background:${tile.color}`}>
-                    <span>{tile.initials}</span>
-                    <span class="mock__badge"><svg class="pic"><use href="#p-lock"></use></svg></span>
+            <div class="mock__screen mock__screen--replica">
+              <div class="rh">
+                <div class="rh__status" aria-hidden="true">
+                  <span class="rh__time">{holes.time}</span>
+                  <span class="rh__icons">
+                    <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"></rect><rect x="5" y="5.5" width="3" height="6.5" rx="1"></rect><rect x="10" y="3" width="3" height="9" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1"></rect></svg>
+                    <svg viewBox="0 0 16 12"><path d="M8 2.2c2.4 0 4.6.9 6.2 2.5l1.3-1.4C13.6 1.3 10.9.2 8 .2S2.4 1.3.5 3.3l1.3 1.4C3.4 3.1 5.6 2.2 8 2.2Zm0 3.6c1.4 0 2.7.5 3.6 1.4l1.3-1.4C11.6 4.6 9.9 3.8 8 3.8s-3.6.8-4.9 2l1.3 1.4c.9-.9 2.2-1.4 3.6-1.4Zm0 3.4c-.5 0-1 .2-1.3.5L8 11.8l1.3-2.1c-.3-.3-.8-.5-1.3-.5Z"></path></svg>
+                    <svg viewBox="0 0 27 12"><rect x="0.5" y="0.5" width="23" height="11" rx="3.5" fill="none" stroke="currentColor" opacity="0.4"></rect><rect x="2" y="2" width="20" height="8" rx="2"></rect><path d="M25 4v4c.8-.3 1.3-1.1 1.3-2S25.8 4.3 25 4Z" opacity="0.4"></path></svg>
                   </span>
-                  <span class="mock__tile-name">{tile.name}</span>
-                  <span class="mock__tile-status">{tile.status}</span>
                 </div>
-              ))}
-            </div>
-            <ul class="mock__holes">
-              {panels.holes.rows.map((row) => (
-                <li class="mock__hole">
-                  <span class="mock__hole-kind">{row.kind}</span>
-                  <span class="mock__hole-name">
-                    <svg class="pic"><use href="#p-lock"></use></svg>
-                    {row.name}
-                  </span>
-                  <span class="mock__hole-count">{row.count}</span>
-                </li>
-              ))}
-            </ul>
-            <p class="mock__note">{panels.holes.note}</p>
-          </div>
 
-          <!-- 2 · The ledger -->
-          <div class="mock__panel" data-panel="2">
-            <span class="eyebrow">{panels.earn.eyebrow}</span>
-            <div class="mock__total">
-              <span class="display mock__total-num">{panels.earn.total}</span>
-              <span class="mock__total-unit">min</span>
-            </div>
-            <ul class="mock__ledger">
-              {panels.earn.rows.map((row) => (
-                <li class="mock__row">
-                  <svg class="pic"><use href={`#p-${row.icon}`}></use></svg>
-                  <span class="mock__row-text">
-                    <span class="mock__row-title">{row.title}</span>
-                    <span class="mock__row-rate">{row.rate}</span>
-                  </span>
-                  <span class="mock__row-min"><span class="mock__row-num">{row.minutes}</span><span class="mock__row-unit">min</span></span>
-                </li>
-              ))}
-            </ul>
-          </div>
+                <div class="rh__bar">
+                  <span class="rh__round" aria-hidden="true"><svg class="pic rh__back"><use href="#p-chevron"></use></svg></span>
+                  <span class="rh__title">{holes.title}</span>
+                  <span class="rh__edit">{holes.edit}</span>
+                </div>
 
-          <!-- 3 · The limit screen -->
-          <div class="mock__panel" data-panel="3">
-            <div class="mock__head">
-              <span class="mock__link">{panels.limit.neverMind}</span>
-              <span class="eyebrow">{panels.limit.eyebrow}</span>
-            </div>
-            <div class="mock__limit">
-              <div class="mock__total mock__total--big">
-                <span class="display mock__total-num">{panels.limit.minutes}</span>
-                <span class="mock__total-unit">min</span>
-              </div>
-              <span class="mock__ends serif-italic">{panels.limit.ends}</span>
-              <div class="mock__slider" aria-hidden="true"><span class="mock__knob"></span></div>
-              <div class="mock__chips">
-                {panels.limit.chips.map((c) => (
-                  <span class:list={['mock__chip', { 'is-selected': c === panels.limit.minutes }]}>{c}</span>
+                {holes.groups.map((group) => (
+                  <div class="rh__group">
+                    <p class="rh__eyebrow">{group.title}</p>
+                    <ul class="rh__card">
+                      {group.rows.map((row) => (
+                        <li class="rh__row">
+                          <span class="rh__icon" style={`background:${row.color}`} aria-hidden="true">
+                            {'initials' in row ? <span>{row.initials}</span> : <svg class="pic"><use href={`#p-${row.icon}`}></use></svg>}
+                            <span class="rh__badge"><svg class="pic"><use href="#p-lock"></use></svg></span>
+                          </span>
+                          <span class="rh__text">
+                            <span class="rh__name">{row.name}</span>
+                            {'detail' in row && <span class="rh__detail">{row.detail}</span>}
+                          </span>
+                        </li>
+                      ))}
+                      {'limit' in group && group.limit && (
+                        <li class="rh__row rh__row--text">
+                          <span class="rh__text">
+                            <span class="rh__limit">{group.limit.title}</span>
+                            <span class="rh__detail">
+                              {group.limit.before}<span class="rh__link">{group.limit.link}</span>{group.limit.after}
+                            </span>
+                          </span>
+                        </li>
+                      )}
+                      {'add' in group && group.add && (
+                        <li class="rh__row rh__row--text">
+                          <span class="rh__add">{group.add}</span>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
                 ))}
+
+                <p class="rh__footer">{holes.footer}</p>
               </div>
-              <span class="mock__commit">{panels.limit.commit}</span>
-              <span class="mock__note">{panels.limit.footer}</span>
             </div>
+          </div>
+
+          <!-- 2 · Earn (capture) -->
+          <div class="mock__panel" data-panel="2">
+            <Image
+              class="mock__screen"
+              src={earnScreen}
+              alt={panels.earn.alt}
+              widths={[360, 720, 1080, 1320]}
+              sizes={screenSizes}
+              quality={85}
+            />
+          </div>
+
+          <!-- 3 · How long (capture) -->
+          <div class="mock__panel" data-panel="3">
+            <Image
+              class="mock__screen"
+              src={limitScreen}
+              alt={panels.limit.alt}
+              widths={[360, 720, 1080, 1320]}
+              sizes={screenSizes}
+              quality={85}
+            />
           </div>
         </div>
       </div>
@@ -164,23 +181,25 @@ const { items, panels } = features;
   .mock {
     position: relative;
     z-index: 1;
-    min-height: 480px;
+    /* All three panels share one grid cell, so the card is as tall as the tallest */
+    display: grid;
     overflow: hidden;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
   .mock__panel {
-    position: absolute;
-    inset: 0;
+    grid-area: 1 / 1;
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    align-items: center;
+    justify-content: center;
     padding: 28px;
     opacity: 0;
     transform: translateY(12px);
     transition:
       opacity 0.45s var(--ease-out),
-      transform 0.45s var(--ease-out);
+      transform 0.45s var(--ease-out),
+      visibility 0s linear 0.45s;
+    visibility: hidden;
     pointer-events: none;
   }
   .mock[data-state='1'] .mock__panel[data-panel='1'],
@@ -188,242 +207,202 @@ const { items, panels } = features;
   .mock[data-state='3'] .mock__panel[data-panel='3'] {
     opacity: 1;
     transform: none;
+    visibility: visible;
     pointer-events: auto;
+    transition-delay: 0s;
   }
-  .mock__head {
+
+  /* An app screen on paper: the captures, and the replica drawn to match them */
+  .mock__screen {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    border-radius: 22px;
+    background: #f7f0e4;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 24px 48px rgba(0, 0, 0, 0.35);
+  }
+
+  /* --- The Rabbit holes replica, in app points (1pt = 1/440 of the screen) --- */
+  .mock__screen--replica {
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .rh {
+    --pt: calc(100cqw / 440);
+    --ink: #1f1a17;
+    --ink-2: #5c544d;
+    --rule: #e2d8c6;
+    --page: #fffbf4;
+    --terracotta: #b8432b;
+
+    display: flex;
+    flex-direction: column;
+    padding: 0 calc(20 * var(--pt)) calc(28 * var(--pt));
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: calc(17 * var(--pt));
+    line-height: 1.3;
+    text-align: left;
+  }
+  .rh__status {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-  }
-  .mock__title {
-    font-family: var(--font-serif);
+    height: calc(54 * var(--pt));
+    padding: calc(4 * var(--pt)) calc(14 * var(--pt)) 0 calc(36 * var(--pt));
+    font-size: calc(17 * var(--pt));
     font-weight: 600;
-    font-variation-settings: 'SOFT' 60, 'WONK' 0;
-    font-size: 22px;
   }
-  .mock__link {
-    color: var(--link);
-    font-weight: 600;
-    font-size: 15px;
-  }
-  .mock__note {
-    font-size: 14px;
-    color: var(--text-muted);
-  }
-
-  /* Tiles */
-  .mock__tiles {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-  .mock__tile {
-    display: flex;
-    flex-direction: column;
+  .rh__icons {
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 18px 10px 14px;
-    border-radius: 14px;
-    background: var(--surface);
-    box-shadow: inset 0 0 0 1px var(--rule);
-    text-align: center;
+    gap: calc(6 * var(--pt));
   }
-  .mock__appicon {
-    position: relative;
+  .rh__icons svg {
+    width: auto;
+    height: calc(12 * var(--pt));
+    fill: currentColor;
+  }
+  .rh__bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: calc(56 * var(--pt));
+  }
+  .rh__round,
+  .rh__edit {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 13px;
+    height: calc(44 * var(--pt));
+    border-radius: 999px;
+    background: var(--page);
+    box-shadow:
+      0 0 0 calc(1 * var(--pt)) var(--rule),
+      0 calc(2 * var(--pt)) calc(6 * var(--pt)) rgba(31, 26, 23, 0.06);
+  }
+  .rh__round {
+    width: calc(44 * var(--pt));
+  }
+  .rh__back {
+    width: calc(22 * var(--pt));
+    height: calc(22 * var(--pt));
+    transform: scaleX(-1);
+  }
+  .rh__title {
+    font-weight: 600;
+    font-size: calc(17 * var(--pt));
+  }
+  .rh__edit {
+    justify-self: end;
+    padding: 0 calc(16 * var(--pt));
+    color: var(--terracotta);
+    font-size: calc(17 * var(--pt));
+  }
+  .rh__group {
+    display: flex;
+    flex-direction: column;
+    gap: calc(8 * var(--pt));
+    margin-top: calc(16 * var(--pt));
+  }
+  .rh__eyebrow {
+    padding-left: calc(2 * var(--pt));
+    font-size: calc(12 * var(--pt));
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .rh__card {
+    display: flex;
+    flex-direction: column;
+    border-radius: calc(20 * var(--pt));
+    background: var(--page);
+  }
+  .rh__row {
+    display: flex;
+    align-items: center;
+    gap: calc(12 * var(--pt));
+    min-height: calc(52 * var(--pt));
+    padding: calc(8 * var(--pt)) calc(18 * var(--pt));
+  }
+  .rh__row + .rh__row {
+    box-shadow: inset 0 calc(1 * var(--pt)) 0 var(--rule);
+  }
+  .rh__icon {
+    position: relative;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(36 * var(--pt));
+    height: calc(36 * var(--pt));
+    margin-right: calc(4 * var(--pt));
+    border-radius: calc(9 * var(--pt));
     color: #fff;
     font-weight: 700;
-    font-size: 15px;
+    font-size: calc(12 * var(--pt));
     letter-spacing: 0.02em;
   }
-  .mock__badge {
+  .rh__icon > .pic {
+    width: calc(20 * var(--pt));
+    height: calc(20 * var(--pt));
+  }
+  .rh__badge {
     position: absolute;
-    right: -6px;
-    bottom: -6px;
+    right: calc(-6 * var(--pt));
+    bottom: calc(-6 * var(--pt));
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
+    width: calc(18 * var(--pt));
+    height: calc(18 * var(--pt));
     border-radius: 999px;
-    background: var(--solid);
-    box-shadow: inset 0 0 0 1.5px var(--ink);
+    background: var(--page);
+    box-shadow: 0 0 0 calc(1.5 * var(--pt)) var(--ink);
     color: var(--ink);
   }
-  .mock__badge .pic {
-    width: 13px;
-    height: 13px;
+  .rh__badge .pic {
+    width: calc(12 * var(--pt));
+    height: calc(12 * var(--pt));
   }
-  .mock__tile-name {
-    margin-top: 6px;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .mock__tile-status {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-  .mock__holes {
+  .rh__text {
     display: flex;
     flex-direction: column;
-    margin-top: 6px;
-    border-top: 1px solid var(--ink);
-  }
-  .mock__hole {
-    display: grid;
-    grid-template-columns: 100px 1fr auto;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--rule);
-    font-size: 14px;
-  }
-  .mock__hole-kind {
-    font-weight: 600;
-  }
-  .mock__hole-name {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .mock__hole-name .pic {
-    width: 16px;
-    height: 16px;
-    color: var(--ink-2);
-  }
-  .mock__hole-count {
-    font-size: 12.5px;
-    color: var(--text-muted);
-  }
-
-  /* Ledger */
-  .mock__total {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-  }
-  .mock__total-num {
-    font-size: 64px;
-  }
-  .mock__total--big .mock__total-num {
-    font-size: 96px;
-  }
-  .mock__total-unit {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: 20px;
-  }
-  .mock__ledger {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--ink);
-  }
-  .mock__row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--rule);
-  }
-  .mock__row .pic {
-    color: var(--ink-2);
-  }
-  .mock__row-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    gap: calc(1 * var(--pt));
     min-width: 0;
   }
-  .mock__row-title {
+  .rh__name {
+    font-size: calc(16 * var(--pt));
+  }
+  .rh__detail {
+    font-size: calc(13 * var(--pt));
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+  .rh__limit {
+    font-size: calc(16 * var(--pt));
+    color: var(--ink-2);
+  }
+  .rh__link {
+    color: var(--terracotta);
     font-weight: 600;
-    font-size: 15px;
   }
-  .mock__row-rate {
-    font-size: 12.5px;
-    color: var(--text-muted);
-  }
-  .mock__row-min {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 4px;
-  }
-  .mock__row-num {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    font-size: 22px;
-    font-variant-numeric: tabular-nums;
-  }
-  .mock__row-unit {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  /* Limit screen */
-  .mock__limit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    flex: 1;
-    justify-content: center;
-    text-align: center;
-  }
-  .mock__ends {
-    font-size: 24px;
-  }
-  .mock__slider {
-    position: relative;
-    width: 100%;
-    height: 1px;
-    margin: 12px 0;
-    background: var(--rule-2);
-  }
-  .mock__knob {
-    position: absolute;
-    left: 42%;
-    top: 50%;
-    width: 22px;
-    height: 22px;
-    transform: translate(-50%, -50%);
-    border-radius: 999px;
-    background: var(--solid);
-    box-shadow: inset 0 0 0 1.5px var(--ink);
-  }
-  .mock__chips {
-    display: flex;
-    gap: 8px;
-  }
-  .mock__chip {
-    min-width: 52px;
-    padding: 7px 12px;
-    border-radius: 12px;
-    box-shadow: inset 0 0 0 1px var(--rule-2);
+  .rh__add {
+    color: var(--terracotta);
     font-weight: 600;
-    font-size: 14px;
-    text-align: center;
+    font-size: calc(16 * var(--pt));
   }
-  .mock__chip.is-selected {
-    background: var(--ink);
-    color: var(--paper);
-    box-shadow: none;
-  }
-  .mock__commit {
-    width: 100%;
-    padding: 14px 18px;
-    border-radius: var(--radius-btn);
-    background: var(--btn-bg);
-    color: var(--btn-text);
-    font-weight: 600;
-    font-size: 15px;
+  .rh__footer {
+    margin-top: calc(10 * var(--pt));
+    padding: 0 calc(18 * var(--pt));
+    font-size: calc(13 * var(--pt));
+    line-height: 1.4;
+    color: var(--ink-2);
   }
 
   @media (max-width: 1199.98px) {
@@ -441,14 +420,11 @@ const { items, panels } = features;
     .features__item .body {
       max-width: none;
     }
-    .mock {
-      min-height: 440px;
-    }
     .mock__panel {
-      padding: 22px 18px;
+      padding: 18px;
     }
-    .mock__total--big .mock__total-num {
-      font-size: 80px;
+    .mock__screen {
+      border-radius: 18px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -472,6 +448,7 @@ const { items, panels } = features;
         tab.tabIndex = active ? 0 : -1;
       });
       stage.dataset.state = String(index + 1);
+      stage.setAttribute('aria-labelledby', tabs[index].id);
     };
 
     tabs.forEach((tab, i) => {
