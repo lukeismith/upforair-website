@@ -1,8 +1,11 @@
 ---
 /**
- * The Guilt trip, as the app shows it: the bunny at the edge of its hole says one
- * line, and you choose. One reply turns back, the other carries on. Here the two
- * replies shuffle, just as in the app, so you have to read them.
+ * The Guilt trip, as the app shows it (DESIGN.md §9 and GuiltTripPacing in the app repo):
+ * the bunny at the edge of its hole says one line, typed at 30 characters a second with
+ * a short beat after each sentence. Then the two replies fade in and type, in a random
+ * order, so you have to read them. You choose one by holding it until its fill reaches
+ * the far edge (three seconds); letting go drains it at the same rate. The lines are the
+ * app's seventeen, and the ones tied to a time of day only show at that time of day.
  */
 import Tag from './Tag.astro';
 import sceneGuilt from '../assets/art/scene-guilt.svg?url';
@@ -10,7 +13,15 @@ import sceneRelieved from '../assets/art/scene-relieved.svg?url';
 import sceneInHole from '../assets/art/scene-in-hole.svg?url';
 import { guiltTrip } from '../data/site';
 
+/** Without JavaScript (and before the card scrolls into view), the first line shows whole. */
 const first = guiltTrip.lines[0];
+const config = {
+  lines: guiltTrip.lines,
+  landing: guiltTrip.landing,
+  carryOn: guiltTrip.carryOn,
+  holdSeconds: guiltTrip.holdSeconds,
+  charactersPerSecond: guiltTrip.charactersPerSecond,
+};
 ---
 
 <section class="section guilt" aria-labelledby="guilt-title">
@@ -25,25 +36,39 @@ const first = guiltTrip.lines[0];
       </button>
     </div>
 
-    <div class="card guilt__stage" data-appear data-guilt data-lines={JSON.stringify(guiltTrip.lines)} data-landing={JSON.stringify(guiltTrip.landing)}>
+    <div class="card guilt__stage" data-appear data-guilt data-config={JSON.stringify(config)}>
       <div class="guilt__pause" data-guilt-pause>
         <div class="guilt__bubble">
           <span class="eyebrow">{guiltTrip.bubbleEyebrow}</span>
-          <p class="guilt__line" data-guilt-line>{first.say}</p>
+          <p class="guilt__line">
+            <span class="sr-only" data-guilt-line-full aria-live="polite">{first.say}</span>
+            <span class="guilt__sizer" data-guilt-line-sizer aria-hidden="true">{first.say}</span>
+            <span class="guilt__typed" data-guilt-line aria-hidden="true">{first.say}</span>
+          </p>
         </div>
         <img class="guilt__scene" src={sceneGuilt} alt="" width="200" height="130" loading="lazy" />
         <div class="guilt__replies" data-guilt-replies>
-          <button type="button" class="guilt__reply" data-reply="stay">{first.stay}</button>
-          <button type="button" class="guilt__reply" data-reply="go">{first.go}</button>
+          {[first.stay, first.go].map((text, i) => (
+            <button type="button" class="guilt__reply" data-reply={i === 0 ? 'stay' : 'go'}>
+              <span class="guilt__fill" aria-hidden="true"></span>
+              <span class="sr-only" data-reply-full>{text}</span>
+              <span class="guilt__sizer" aria-hidden="true">{text}</span>
+              <span class="guilt__typed" data-reply-text aria-hidden="true">{text}</span>
+            </button>
+          ))}
         </div>
+        <p class="tiny muted guilt__hint">{guiltTrip.replyHint}</p>
       </div>
 
       <div class="guilt__landing" data-guilt-landing hidden>
-        <img class="guilt__scene" data-landing-scene data-relieved={sceneRelieved} data-hole={sceneInHole} src={sceneRelieved} alt="" width="200" height="130" loading="lazy" />
+        <img class="guilt__scene" data-landing-scene src={sceneRelieved} alt="" width="200" height="130" loading="lazy" />
+        <span class="eyebrow" data-landing-eyebrow>{guiltTrip.landing.eyebrow}</span>
         <p class="guilt__landing-line serif-italic" data-landing-line></p>
-        <p class="small muted" data-landing-note></p>
-        <button type="button" class="guilt__again" data-guilt-again>Try another</button>
+        <p class="h4 guilt__landing-title" data-landing-title>{guiltTrip.landing.title}</p>
+        <p class="small muted guilt__landing-body" data-landing-body></p>
+        <button type="button" class="guilt__again" data-guilt-again>{guiltTrip.reshuffle}</button>
       </div>
+      <span hidden data-scene-relieved={sceneRelieved} data-scene-hole={sceneInHole}></span>
     </div>
   </div>
 </section>
@@ -77,7 +102,7 @@ const first = guiltTrip.lines[0];
   .guilt__stage {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    min-height: 420px;
+    min-height: 460px;
     padding: 28px;
     display: flex;
     flex-direction: column;
@@ -111,6 +136,7 @@ const first = guiltTrip.lines[0];
     border-bottom: 1.5px solid var(--ink);
   }
   .guilt__line {
+    display: grid;
     margin-top: 6px;
     font-family: var(--font-serif);
     font-weight: 500;
@@ -118,39 +144,88 @@ const first = guiltTrip.lines[0];
     font-size: 23px;
     line-height: 1.2;
     letter-spacing: -0.01em;
-    min-height: 2.4em;
+  }
+  /* The full text, invisible, holds the size; the typed text sits on top of it */
+  .guilt__sizer,
+  .guilt__typed {
+    grid-area: 1 / 1;
+  }
+  .guilt__sizer {
+    visibility: hidden;
   }
   .guilt__scene {
     width: 220px;
     height: auto;
   }
   .guilt__replies {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     width: 100%;
+    transition: opacity 1s ease;
+  }
+  .guilt__replies.is-waiting {
+    opacity: 0;
   }
   .guilt__reply {
-    padding: 13px 14px;
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: 50px;
+    padding: 12px 18px;
+    overflow: hidden;
     border-radius: var(--radius-btn);
     box-shadow: inset 0 0 0 1px var(--border-strong);
     font-weight: 600;
     font-size: 15px;
     line-height: 1.25;
     text-align: center;
-    transition:
-      background-color 0.2s ease,
-      transform 0.2s var(--ease-out);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    transform: scale(calc(1 + var(--fill, 0) * 0.05));
+    transition: background-color 0.2s ease;
+  }
+  .guilt__reply .guilt__sizer,
+  .guilt__reply .guilt__typed {
+    position: relative;
   }
   .guilt__reply:hover {
     background: var(--well);
   }
-  .guilt__reply:active {
-    transform: scale(0.98);
+  .guilt__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--apricot);
+    opacity: 0.35;
+    transform: scaleX(var(--fill, 0));
+    transform-origin: left center;
+    pointer-events: none;
+  }
+  .guilt__reply.is-chosen .guilt__fill {
+    opacity: 0.5;
+  }
+  .guilt__hint {
+    margin-top: -4px;
+    text-align: center;
   }
   .guilt__landing-line {
     font-size: 26px;
     text-align: center;
+  }
+  .guilt__landing .eyebrow {
+    margin-bottom: -10px;
+  }
+  .guilt__landing-title,
+  .guilt__landing-body {
+    text-align: center;
+  }
+  .guilt__landing-title {
+    margin-bottom: -10px;
+  }
+  .guilt__landing-body {
+    max-width: 380px;
   }
   .guilt__again {
     color: var(--link);
@@ -179,86 +254,280 @@ const first = guiltTrip.lines[0];
       font-size: 20px;
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    .guilt__reply {
+      transform: none;
+    }
+    .guilt__replies {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
-  type Line = { say: string; go: string; stay: string };
+  type Line = { say: string; go: string; stay: string; hours?: [number, number] };
+  type Config = {
+    lines: Line[];
+    landing: { eyebrow: string; lines: string[]; title: string; body: string };
+    carryOn: { line: string; body: string };
+    holdSeconds: number;
+    charactersPerSecond: number;
+  };
+  type Kind = 'stay' | 'go';
+
+  /** The extra wait after a sentence ends, and the replies' fade, as in GuiltTripPacing. */
+  const SENTENCE_PAUSE = 0.25;
+  const REPLIES_FADE = 1;
+
+  /** When each character of a text appears, in seconds, with a beat after each sentence. */
+  const schedule = (text: string, cps: number) => {
+    const chars = Array.from(text);
+    const ends = new Set(['.', '?', '!', '…']);
+    const closers = new Set(['”', '’', '"', "'", ')']);
+    const endsSentence = (end: number) => {
+      let i = end - 1;
+      while (i >= 0 && closers.has(chars[i])) i -= 1;
+      return i >= 0 && ends.has(chars[i]);
+    };
+    const times: number[] = [];
+    let pauses = 0;
+    chars.forEach((c, i) => {
+      if (/\s/.test(c) && endsSentence(i) && chars.slice(i + 1).some((n) => !/\s/.test(n))) pauses += 1;
+      times.push(i / cps + pauses * SENTENCE_PAUSE);
+    });
+    return { chars, times, duration: chars.length / cps + pauses * SENTENCE_PAUSE, endsWithSentence: endsSentence(chars.length) };
+  };
+  const visible = (s: ReturnType<typeof schedule>, elapsed: number) =>
+    s.chars.slice(0, s.times.filter((t) => t <= elapsed + 1e-9).length).join('');
+
+  const shuffle = <T,>(items: T[]) => {
+    const a = items.slice();
+    for (let i = a.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
 
   for (const stage of document.querySelectorAll<HTMLElement>('[data-guilt]')) {
-    const lines = JSON.parse(stage.dataset.lines ?? '[]') as Line[];
-    const landingLines = JSON.parse(stage.dataset.landing ?? '[]') as string[];
+    const config = JSON.parse(stage.dataset.config ?? '{}') as Config;
     const pause = stage.querySelector<HTMLElement>('[data-guilt-pause]')!;
     const landing = stage.querySelector<HTMLElement>('[data-guilt-landing]')!;
     const lineEl = stage.querySelector<HTMLElement>('[data-guilt-line]')!;
+    const lineSizer = stage.querySelector<HTMLElement>('[data-guilt-line-sizer]')!;
+    const lineFull = stage.querySelector<HTMLElement>('[data-guilt-line-full]')!;
     const replies = stage.querySelector<HTMLElement>('[data-guilt-replies]')!;
-    const landingLine = stage.querySelector<HTMLElement>('[data-landing-line]')!;
-    const landingNote = stage.querySelector<HTMLElement>('[data-landing-note]')!;
+    const buttons = Array.from(replies.querySelectorAll<HTMLButtonElement>('[data-reply]'));
     const landingScene = stage.querySelector<HTMLImageElement>('[data-landing-scene]')!;
+    const landingEyebrow = stage.querySelector<HTMLElement>('[data-landing-eyebrow]')!;
+    const landingLine = stage.querySelector<HTMLElement>('[data-landing-line]')!;
+    const landingTitle = stage.querySelector<HTMLElement>('[data-landing-title]')!;
+    const landingBody = stage.querySelector<HTMLElement>('[data-landing-body]')!;
+    const scenes = stage.querySelector<HTMLElement>('[data-scene-relieved]')!.dataset;
     const another = stage.closest('section')?.querySelector<HTMLButtonElement>('[data-guilt-another]');
     const again = stage.querySelector<HTMLButtonElement>('[data-guilt-again]')!;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const holdMs = config.holdSeconds * 1000;
 
-    let index = 0;
-    let typing: number | undefined;
+    // The lines for this hour, in a shuffled deck, as the app deals them.
+    const hour = new Date().getHours();
+    const fits = (line: Line) => {
+      if (!line.hours) return true;
+      const [from, to] = line.hours;
+      return from < to ? hour >= from && hour < to : hour >= from || hour < to;
+    };
+    const eligible = config.lines.filter(fits);
+    let deck: Line[] = [];
+    let last: Line | undefined;
+    const deal = () => {
+      if (deck.length === 0) {
+        deck = shuffle(eligible);
+        if (deck.length > 1 && deck[0] === last) deck.push(deck.shift()!);
+      }
+      last = deck.shift()!;
+      return last;
+    };
 
-    const typeLine = (text: string) => {
-      window.clearInterval(typing);
+    // --- The reveal ---
+    let frame = 0;
+    let acceptsHolds = true;
+    let chosen = false;
+
+    const reveal = (line: Line, order: Kind[]) => {
+      window.cancelAnimationFrame(frame);
+      const texts = order.map((kind) => line[kind]);
+      buttons.forEach((btn, i) => {
+        btn.dataset.reply = order[i];
+        btn.querySelector<HTMLElement>('.guilt__sizer')!.textContent = texts[i];
+        btn.querySelector<HTMLElement>('[data-reply-full]')!.textContent = texts[i];
+      });
+      lineSizer.textContent = line.say;
+      lineFull.textContent = line.say;
+
       if (reduceMotion) {
-        lineEl.textContent = text;
+        lineEl.textContent = line.say;
+        buttons.forEach((btn, i) => (btn.querySelector<HTMLElement>('[data-reply-text]')!.textContent = texts[i]));
+        replies.classList.remove('is-waiting');
+        acceptsHolds = true;
         return;
       }
+
+      const cps = config.charactersPerSecond;
+      const say = schedule(line.say, cps);
+      const answers = texts.map((t) => schedule(t, cps));
+      const starts: number[] = [];
+      let t = say.duration + REPLIES_FADE;
+      answers.forEach((a, i) => {
+        starts.push(t);
+        t += a.duration;
+        if (i < answers.length - 1 && a.endsWithSentence) t += SENTENCE_PAUSE;
+      });
+      const holdsFrom = starts[starts.length - 1];
+      const total = t;
+
       lineEl.textContent = '';
-      let i = 0;
-      typing = window.setInterval(() => {
-        i += 1;
-        lineEl.textContent = text.slice(0, i);
-        if (i >= text.length) window.clearInterval(typing);
-      }, 1000 / 15);
+      buttons.forEach((btn) => (btn.querySelector<HTMLElement>('[data-reply-text]')!.textContent = ''));
+      replies.classList.add('is-waiting');
+      acceptsHolds = false;
+
+      const begin = performance.now();
+      const tick = (now: number) => {
+        const elapsed = (now - begin) / 1000;
+        lineEl.textContent = visible(say, elapsed);
+        if (elapsed >= say.duration) replies.classList.remove('is-waiting');
+        answers.forEach((a, i) => {
+          buttons[i].querySelector<HTMLElement>('[data-reply-text]')!.textContent = visible(a, elapsed - starts[i]);
+        });
+        acceptsHolds = elapsed >= holdsFrom;
+        if (elapsed < total) frame = window.requestAnimationFrame(tick);
+      };
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    // --- Holding a reply ---
+    const fill = new Map<HTMLButtonElement, { value: number; pressed: boolean }>();
+    buttons.forEach((btn) => fill.set(btn, { value: 0, pressed: false }));
+    let holdFrame = 0;
+    let lastTick = 0;
+
+    const draw = (btn: HTMLButtonElement) => btn.style.setProperty('--fill', String(fill.get(btn)!.value));
+    const resetFills = () => {
+      buttons.forEach((btn) => {
+        fill.set(btn, { value: 0, pressed: false });
+        btn.classList.remove('is-chosen');
+        draw(btn);
+      });
+    };
+
+    const holdTick = (now: number) => {
+      const dt = now - lastTick;
+      lastTick = now;
+      let moving = false;
+      for (const btn of buttons) {
+        const f = fill.get(btn)!;
+        if (f.pressed) f.value = Math.min(1, f.value + dt / holdMs);
+        else f.value = Math.max(0, f.value - dt / holdMs);
+        draw(btn);
+        if (f.pressed && f.value >= 1 && !chosen) {
+          choose(btn.dataset.reply as Kind, btn);
+          return;
+        }
+        if (f.pressed || f.value > 0) moving = true;
+      }
+      holdFrame = moving ? window.requestAnimationFrame(holdTick) : 0;
+    };
+    const run = () => {
+      if (holdFrame) return;
+      lastTick = performance.now();
+      holdFrame = window.requestAnimationFrame(holdTick);
+    };
+    const press = (btn: HTMLButtonElement) => {
+      if (!acceptsHolds || chosen) return;
+      // One reply at a time, as in the app.
+      if (buttons.some((b) => b !== btn && fill.get(b)!.pressed)) return;
+      fill.get(btn)!.pressed = true;
+      run();
+    };
+    const release = (btn: HTMLButtonElement) => {
+      const f = fill.get(btn)!;
+      if (!f.pressed) return;
+      f.pressed = false;
+      run();
+    };
+
+    let lastKey = 0;
+    buttons.forEach((btn) => {
+      btn.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        // Touch captures the pointer; let it go so sliding off the reply drains the fill.
+        if (btn.hasPointerCapture(e.pointerId)) btn.releasePointerCapture(e.pointerId);
+        press(btn);
+      });
+      btn.addEventListener('pointerup', () => release(btn));
+      btn.addEventListener('pointerleave', () => release(btn));
+      btn.addEventListener('pointercancel', () => release(btn));
+      btn.addEventListener('contextmenu', (e) => e.preventDefault());
+      btn.addEventListener('keydown', (e) => {
+        if (e.key !== ' ' && e.key !== 'Enter') return;
+        e.preventDefault();
+        lastKey = performance.now();
+        if (!e.repeat) press(btn);
+      });
+      btn.addEventListener('keyup', (e) => {
+        if (e.key !== ' ' && e.key !== 'Enter') return;
+        e.preventDefault();
+        lastKey = performance.now();
+        release(btn);
+      });
+      btn.addEventListener('blur', () => release(btn));
+      // A screen reader activates a button without a press to hold: choose at once.
+      btn.addEventListener('click', (e) => {
+        if (e.detail !== 0 || performance.now() - lastKey < 600 || chosen) return;
+        choose(btn.dataset.reply as Kind, btn);
+      });
+    });
+
+    // --- The landing ---
+    const choose = (kind: Kind, btn: HTMLButtonElement) => {
+      chosen = true;
+      fill.get(btn)!.value = 1;
+      fill.get(btn)!.pressed = false;
+      btn.classList.add('is-chosen');
+      draw(btn);
+      window.cancelAnimationFrame(holdFrame);
+      holdFrame = 0;
+      window.setTimeout(() => {
+        const stayed = kind === 'stay';
+        landingScene.src = stayed ? scenes.sceneRelieved! : scenes.sceneHole!;
+        landingEyebrow.hidden = !stayed;
+        landingTitle.hidden = !stayed;
+        landingLine.textContent = stayed
+          ? config.landing.lines[Math.floor(Math.random() * config.landing.lines.length)]
+          : config.carryOn.line;
+        landingBody.textContent = stayed ? config.landing.body : config.carryOn.body;
+        pause.hidden = true;
+        landing.hidden = false;
+      }, 300);
     };
 
     const show = (line: Line) => {
-      // The two replies look the same and swap places at random, so you have to read them.
-      // The buttons stay in place (they carry the scoped styles); only their words move.
-      const buttons = Array.from(replies.querySelectorAll<HTMLButtonElement>('[data-reply]'));
-      const order: Array<'stay' | 'go'> = Math.random() < 0.5 ? ['stay', 'go'] : ['go', 'stay'];
-      buttons.forEach((btn, i) => {
-        const kind = order[i] ?? 'stay';
-        btn.dataset.reply = kind;
-        btn.textContent = line[kind];
-      });
+      chosen = false;
+      resetFills();
       landing.hidden = true;
       pause.hidden = false;
-      typeLine(line.say);
+      const order: Kind[] = Math.random() < 0.5 ? ['stay', 'go'] : ['go', 'stay'];
+      reveal(line, order);
     };
-
-    const next = () => {
-      index = (index + 1) % lines.length;
-      show(lines[index]);
-    };
-
-    replies.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-reply]');
-      if (!btn) return;
-      const stayed = btn.dataset.reply === 'stay';
-      landingScene.src = stayed ? landingScene.dataset.relieved! : landingScene.dataset.hole!;
-      landingLine.textContent = stayed
-        ? landingLines[Math.floor(Math.random() * landingLines.length)]
-        : 'Down we go. Back up at 3:40.';
-      landingNote.textContent = stayed
-        ? 'Nothing started. Turning back isn’t an unlock.'
-        : 'In the app, your rabbit holes open until the clock time you chose.';
-      pause.hidden = true;
-      landing.hidden = false;
-    });
+    const next = () => show(deal());
 
     again.addEventListener('click', next);
     another?.addEventListener('click', next);
 
-    // Type the first line once the card scrolls into view.
+    // Deal the first line once the card scrolls into view.
     new IntersectionObserver(
       ([entry], observer) => {
         if (!entry.isIntersecting) return;
-        show(lines[0]);
+        next();
         observer.disconnect();
       },
       { threshold: 0.4 },

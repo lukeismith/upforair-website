@@ -16,7 +16,7 @@ const { free, premium } = pricing;
     <div class="pricing__toggle" data-appear="fade">
       <button class="pricing__label" type="button" data-billing-set="monthly">{pricing.toggle.monthly}</button>
       <label class="switch">
-        <span class="sr-only">Bill yearly</span>
+        <span class="sr-only">{pricing.toggle.srLabel}</span>
         <input type="checkbox" role="switch" checked data-billing-toggle />
         <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
       </label>
@@ -36,7 +36,7 @@ const { free, premium } = pricing;
         </div>
         <div class="plan__cta">
           <Button href={free.cta.href} variant="outlined" block>{free.cta.label}</Button>
-          <p class="tiny muted plan__note">Free stays free.</p>
+          <p class="tiny muted plan__note">{free.note}</p>
         </div>
         <div class="plan__features">
           <p class="small plan__features-label">{free.featuresLabel}</p>
@@ -52,7 +52,7 @@ const { free, premium } = pricing;
         <div class="plan__top">
           <h3 class="plan__name">
             {premium.name}
-            <span class="plan__best" data-only="yearly"><Tag>Best value</Tag></span>
+            <span class="plan__best" data-only="yearly"><Tag>{premium.bestValue}</Tag></span>
           </h3>
           <p class="plan__price">
             <span class="display plan__amount" data-price data-monthly={premium.monthly.price} data-yearly={premium.yearly.price}>{premium.yearly.price}</span>
