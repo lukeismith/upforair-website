@@ -19,7 +19,7 @@ const { newsletter, columns } = footer;
         <h2 class="h4">{newsletter.title}</h2>
         <p class="body">{newsletter.body}</p>
         <form class="footer__form" method="POST" action={newsletter.action || undefined} data-newsletter>
-          <label class="sr-only" for="newsletter-email">Email address</label>
+          <label class="sr-only" for="newsletter-email">{newsletter.label}</label>
           <input
             id="newsletter-email"
             class="footer__input"
@@ -51,7 +51,10 @@ const { newsletter, columns } = footer;
   <div class="footer__bottom">
     <div class="footer__bottom-inner container--wide">
       <span class="tiny muted">{footer.copyright}</span>
-      <span class="tiny dim">{footer.artNote}</span>
+      <span class="tiny dim">
+        {footer.artNote}
+        {' '}{footer.artCredit.before}<a class="footer__credit" href={footer.artCredit.href} rel="noopener">{footer.artCredit.label}</a>.
+      </span>
     </div>
   </div>
 </footer>
@@ -155,6 +158,16 @@ const { newsletter, columns } = footer;
     transition: color 0.2s ease;
   }
   .footer__links a:hover {
+    color: var(--link);
+  }
+  .footer__credit {
+    color: var(--text-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--rule-2);
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  .footer__credit:hover {
     color: var(--link);
   }
 

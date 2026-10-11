@@ -11,6 +11,8 @@ interface Props {
 }
 const { title = brand.title, description = brand.description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+/** Social cards need an absolute address, so it is built from `site` in astro.config.mjs. */
+const ogImage = new URL(brand.ogImage.path, Astro.site);
 ---
 
 <!doctype html>
@@ -22,6 +24,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#000000" />
 
     <meta property="og:type" content="website" />
@@ -29,9 +34,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={brand.name} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content={String(brand.ogImage.width)} />
+    <meta property="og:image:height" content={String(brand.ogImage.height)} />
+    <meta property="og:image:alt" content={brand.ogImage.alt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={brand.ogImage.alt} />
 
     <link rel="preload" href="/fonts/Fraunces.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Fraunces-Italic.woff2" as="font" type="font/woff2" crossorigin />

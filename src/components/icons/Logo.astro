@@ -1,7 +1,9 @@
 ---
 /**
- * The single-colour bunny mark (head above the rim) from the Almanac design,
- * drawn in the current text colour.
+ * The single-colour bunny mark (the head above the rim, ears up), drawn in the current
+ * text colour. It is the app's current mark (assets/marks/mark-head-out.svg in the app
+ * repo's design reference) simplified to four ellipses, the same geometry as the
+ * favicon in the marketing kit, so it carries none of the stock art and stays small.
  */
 interface Props {
   class?: string;
@@ -20,8 +22,8 @@ const { class: cls, size = 28, style } = Astro.props;
   aria-hidden="true"
   focusable="false"
 >
-  <path
-    d="M16 70 a34 12 0 1 1 68 0 a34 12 0 1 1 -68 0 Z M24 62 a26 26 0 0 1 52 0 V70 H24 Z M30 40 Q28 8 38 4 Q44 10 42 38 Z M58 38 Q56 10 62 4 Q72 8 70 40 Z M35.5 48 a4.5 4.5 0 1 0 9 0 a4.5 4.5 0 1 0 -9 0 Z M55.5 48 a4.5 4.5 0 1 0 9 0 a4.5 4.5 0 1 0 -9 0 Z M42 54 Q50 64 58 54 Q50 59 42 54 Z"
-    fill-rule="nonzero"
-  ></path>
+  <ellipse cx="38.9" cy="20.4" rx="7.2" ry="18.9" transform="rotate(-11 38.9 20.4)"></ellipse>
+  <ellipse cx="61.1" cy="20.4" rx="7.2" ry="18.9" transform="rotate(11 61.1 20.4)"></ellipse>
+  <ellipse cx="50" cy="48.6" rx="20.7" ry="19.2"></ellipse>
+  <ellipse cx="50" cy="67.8" rx="34.8" ry="11.7"></ellipse>
 </svg>
