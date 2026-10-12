@@ -1,9 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
-import { brand, help } from '../data/site';
+import { help } from '../data/site';
 ---
 
-<Base title={`Help – ${brand.name}`} description={help.subtitle}>
+<Base title={help.pageTitle} description={help.subtitle}>
   <section class="help">
     <div class="container help__header" data-appear>
       <p class="eyebrow">{help.eyebrow}</p>
@@ -13,7 +13,7 @@ import { brand, help } from '../data/site';
 
     <div class="container help__layout">
       <aside class="help__sidebar">
-        <nav class="card help__toc" aria-label="On this page">
+        <nav class="card help__toc" aria-label={help.tocTitle}>
           <p class="help__toc-title">{help.tocTitle}</p>
           <ul>
             {help.sections.map((s) => (

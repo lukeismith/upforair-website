@@ -4,7 +4,7 @@
  * starts scrolling, highlights the section in view, and hides again after a
  * few seconds of inactivity. Only meant for the home page.
  */
-import { sections } from '../data/site';
+import { nav, sections } from '../data/site';
 
 interface Props {
   /** Seconds of no scrolling before the pill fades out. */
@@ -17,7 +17,7 @@ const { idleDelay = 5, offset = 96 } = Astro.props;
 
 <nav
   class="secnav"
-  aria-label="Section navigation"
+  aria-label={nav.sectionNavLabel}
   data-secnav
   data-idle={idleDelay}
   style={`--offset:${offset}px`}

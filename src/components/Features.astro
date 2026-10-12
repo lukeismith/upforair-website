@@ -72,10 +72,14 @@ const screenSizes = '(max-width: 443.98px) calc(100vw - 84px), 360px';
                     <ul class="rh__card">
                       {group.rows.map((row) => (
                         <li class="rh__row">
-                          <span class="rh__icon" style={`background:${row.color}`} aria-hidden="true">
-                            {'initials' in row ? <span>{row.initials}</span> : <svg class="pic"><use href={`#p-${row.icon}`}></use></svg>}
-                            <span class="rh__badge"><svg class="pic"><use href="#p-lock"></use></svg></span>
-                          </span>
+                          {'glyph' in row ? (
+                            <svg class="pic rh__glyph" aria-hidden="true"><use href={`#p-${row.glyph}`}></use></svg>
+                          ) : (
+                            <span class="rh__icon" style={`background:${row.color}`} aria-hidden="true">
+                              {'initials' in row ? <span>{row.initials}</span> : <svg class="pic"><use href={`#p-${row.icon}`}></use></svg>}
+                              <span class="rh__badge"><svg class="pic"><use href="#p-lock"></use></svg></span>
+                            </span>
+                          )}
                           <span class="rh__text">
                             <span class="rh__name">{row.name}</span>
                             {'detail' in row && <span class="rh__detail">{row.detail}</span>}
@@ -94,7 +98,10 @@ const screenSizes = '(max-width: 443.98px) calc(100vw - 84px), 360px';
                       )}
                       {'add' in group && group.add && (
                         <li class="rh__row rh__row--text">
-                          <span class="rh__add">{group.add}</span>
+                          <span class="rh__text rh__text--add">
+                            <span class="rh__add">{group.add}</span>
+                            {'addDetail' in group && group.addDetail && <span class="rh__detail">{group.addDetail}</span>}
+                          </span>
                         </li>
                       )}
                     </ul>
@@ -370,11 +377,21 @@ const screenSizes = '(max-width: 443.98px) calc(100vw - 84px), 360px';
     width: calc(12 * var(--pt));
     height: calc(12 * var(--pt));
   }
+  /* A website: a plain 24pt globe in ink-2, with no tile and no padlock badge */
+  .rh__glyph {
+    flex: none;
+    width: calc(24 * var(--pt));
+    height: calc(24 * var(--pt));
+    color: var(--ink-2);
+  }
   .rh__text {
     display: flex;
     flex-direction: column;
     gap: calc(1 * var(--pt));
     min-width: 0;
+  }
+  .rh__text--add {
+    gap: calc(2 * var(--pt));
   }
   .rh__name {
     font-size: calc(16 * var(--pt));

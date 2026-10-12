@@ -6,11 +6,11 @@ import { brand, nav, sections } from '../data/site';
 
 <header class="nav" data-nav>
   <div class="nav__bar container--wide">
-    <a href="/" class="nav__home" aria-label={`${brand.name} home`}>
+    <a href="/" class="nav__home" aria-label={brand.homeLabel}>
       <Wordmark />
     </a>
 
-    <nav class="nav__desktop" aria-label="Primary">
+    <nav class="nav__desktop" aria-label={nav.primaryLabel}>
       <a class="nav__link" href={nav.help.href}>{nav.help.label}</a>
       <Button href={nav.cta.href} size="sm" apple={nav.cta.apple}>{nav.cta.label}</Button>
     </nav>
@@ -20,7 +20,9 @@ import { brand, nav, sections } from '../data/site';
       type="button"
       aria-expanded="false"
       aria-controls="mobile-menu"
-      aria-label="Open menu"
+      aria-label={nav.openMenu}
+      data-label-open={nav.openMenu}
+      data-label-close={nav.closeMenu}
       data-burger
     >
       <span></span>
@@ -30,7 +32,7 @@ import { brand, nav, sections } from '../data/site';
   </div>
 
   <div class="nav__mobile" id="mobile-menu" data-menu>
-    <nav class="nav__mobile-inner container" aria-label="Mobile">
+    <nav class="nav__mobile-inner container" aria-label={nav.mobileLabel}>
       <ul class="nav__mobile-links">
         {sections.map((s) => (
           <li><a href={`/#${s.id}`}>{s.label}</a></li>
@@ -180,7 +182,8 @@ import { brand, nav, sections } from '../data/site';
     const setOpen = (open: boolean) => {
       header.classList.toggle('is-open', open);
       burger.setAttribute('aria-expanded', String(open));
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      const label = open ? burger.dataset.labelClose : burger.dataset.labelOpen;
+      if (label) burger.setAttribute('aria-label', label);
       document.documentElement.classList.toggle('menu-open', open);
     };
 
