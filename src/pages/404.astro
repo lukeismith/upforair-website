@@ -3,13 +3,16 @@ import Base from '../layouts/Base.astro';
 import Tag from '../components/Tag.astro';
 import Button from '../components/Button.astro';
 import sceneThink from '../assets/art/scene-think.svg?url';
-import { brand, notFound } from '../data/site';
+import { notFound } from '../data/site';
 ---
 
-<Base title={`Page not found – ${brand.name}`}>
+<Base title={notFound.pageTitle}>
   <section class="not-found">
     <div class="container not-found__inner" data-appear>
-      <img class="not-found__scene" src={sceneThink} alt="" width="200" height="130" />
+      <!-- The scene's question mark is dark ink drawn for the app's paper, so the scene sits on paper here too. -->
+      <div class="not-found__plate">
+        <img class="not-found__scene" src={sceneThink} alt="" width="200" height="130" />
+      </div>
       <Tag>{notFound.tag}</Tag>
       <h1 class="h1 not-found__title" set:html={notFound.title} />
       <p class="lead not-found__subtitle">{notFound.subtitle}</p>
@@ -32,8 +35,21 @@ import { brand, notFound } from '../data/site';
     gap: 22px;
     text-align: center;
   }
+  /* The app's paper (#f7f0e4, as behind the screens in the hero and in Features). The grass
+     runs to the card's bottom edge, the way the app clips a scene in a card. */
+  .not-found__plate {
+    width: 240px;
+    padding-top: 14px;
+    overflow: hidden;
+    border-radius: var(--radius-panel);
+    background: #f7f0e4;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 24px 48px rgba(0, 0, 0, 0.35);
+  }
   .not-found__scene {
-    width: 220px;
+    display: block;
+    width: 100%;
     height: auto;
   }
   .not-found__title {

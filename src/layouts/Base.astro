@@ -10,7 +10,13 @@ interface Props {
   description?: string;
 }
 const { title = brand.title, description = brand.description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+/**
+ * The build writes pages as files (build.format 'file'), so the pathname ends in .html,
+ * and the home page is /index.html. Canonical and shared links use the clean address:
+ * / for the home page, and /help rather than /help.html.
+ */
+const cleanPath = Astro.url.pathname.replace(/(^|\/)index\.html$/, '$1').replace(/\.html$/, '');
+const canonical = new URL(cleanPath || '/', Astro.site);
 /** Social cards need an absolute address, so it is built from `site` in astro.config.mjs. */
 const ogImage = new URL(brand.ogImage.path, Astro.site);
 ---
