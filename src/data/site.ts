@@ -582,7 +582,7 @@ export const help = {
         },
         {
           q: 'What’s a focus block?',
-          a: 'Phone down for 15, 25, 45, or 60 minutes. You earn the minutes when the timer ends, not before. Stop early and you earn nothing.',
+          a: 'Put your phone down for 25 minutes. You earn the minutes when the timer ends, not before. Stop early and you earn nothing.',
         },
         {
           q: 'How do zones work?',
