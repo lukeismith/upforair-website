@@ -1,7 +1,7 @@
 # Up For Air – website
 
-Static marketing site for **Up For Air**, the iPhone app that locks your rabbit
-holes and lets you earn the minutes that open them. Built with
+Static marketing site for **Up For Air**, the iPhone and iPad app that locks your
+rabbit holes and lets you earn the minutes that open them. Built with
 [Astro 7](https://astro.build).
 
 The page structure and interactions started as a port of the Framer "Simplicity"
@@ -65,8 +65,9 @@ says "Free on the App Store".
 - Point `footer.newsletter.action` at a form endpoint.
 - Add a privacy policy page and link it from the footer (the app's draft is not final).
 - Check prices against App Store Connect: the site shows $6.99 a month, $44.99 a year (shown as $3.75 a month and "Save 46%"), and a 21-day trial on yearly only. These come from the app's local StoreKit file.
-- Decide the trial reminder. The app's paywall promises "We'll remind you two days before it ends", but nothing in the app sends that reminder, so the site leaves the sentence out. Put it back in `pricing.premium.yearly.note` only once the app sends it.
-- Decide the device family. The app builds for iPhone and iPad today, so the site says "iPhone" and does not say that there is no iPad version.
+- Make sure the trial reminder ships. The site says that the app reminds you before the free trial ends (`pricing`, the FAQ and the help page), and it names no number of days, because the trial length can change. The trial length and the prices are one constant each at the top of `site.ts`.
+- The site says "iPhone and iPad" and "iOS 18 or iPadOS 18 or later" (Luke, 2026-10-11). An iPad cannot read NFC, so the help page says that checkpoint tags need an iPhone and that a printed card works on both. Test the app on an iPad before launch.
+- Keep every screenshot on a Premium account. The site describes every feature as part of the app, keeps the differences between Free and Premium in the pricing cards, and says "Screenshots show Up For Air Premium." in the footer (`footer.screenshotNote`). The Earn capture is still a Free one (Zones reads "Part of Premium"), so replace it with a Premium capture and rewrite its alt text.
 - Confirm the Vecteezy licence for the stock bunnies (file 59868990). Under the Free licence the footer credit ("Bunny illustrations from Vecteezy.com", `footer.artCredit`) must stay; under the Pro licence it may go.
 - Swap the placeholder artwork in `src/assets/art/` for the illustrator's files (same names, same viewBoxes), then remove `footer.artNote` and, if no stock art is left, `footer.artCredit`.
 - Retake the screenshots once the build has the current wording. The captures predate the "earned" copy, so Home still reads "Made today" and the Earn plate "Sunday · Made today". Replace `home-day-light.png`, `earn-light-top.png` and `unlock-limit-15-light-top.png` with the same names (the crops are cut from the top of the capture with no other change), update the alt text in `site.ts`, and render `public/og.png` again from the kit if Home changed.
