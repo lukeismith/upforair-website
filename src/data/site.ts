@@ -14,7 +14,7 @@
  * differences between Free and Premium appear only in the pricing cards; nowhere else says
  * "on Premium", "Free has" or "one way at a time". The screenshots show Up For Air Premium,
  * and `footer.screenshotNote` says so. The device is "iPhone and iPad", with iOS 18 or
- * iPadOS 18 or later. Some screenshots predate the "earned" wording, so take numbers and
+ * iPadOS 18 or later. The screenshots show the app's Debug mock day, so take numbers and
  * words from facts.md, not from the pictures.
  */
 
@@ -66,7 +66,7 @@ export const brand = {
     path: '/og.png',
     width: 1200,
     height: 630,
-    alt: 'Up For Air: “Everyone has a rabbit hole or two.” Up For Air locks yours and counts the minutes you earn up top. Beside the text, the app’s Home screen rises from a dark hillside and shows 47 min to spare.',
+    alt: 'Up For Air: “Everyone has a rabbit hole or two.” Up For Air locks yours and counts the minutes you earn up top. Beside the text, the app’s Home screen rises from a dark hillside and shows “Good afternoon!” and 47 min to spare.',
   },
 };
 
@@ -106,12 +106,11 @@ export const hero = {
   cta: brand.primaryCta,
   note: `Free ${brand.platformNote}`,
   /**
-   * The phone shows src/assets/screens/home-day-light.png, a simulator capture of Home.
-   * It was taken before minutes were "earned", so it still reads "Made today". The alt
-   * text describes the list without quoting that old heading.
+   * The phone shows src/assets/screens/home-day-light.png, the marketing kit's simulator
+   * capture of Home on Premium (2026-10-12), whole and uncropped.
    */
   screenAlt:
-    'Up For Air’s Home screen at 1:41 on Sunday, October 11. Under the greeting “Good afternoon!”, a white bunny stands beside its hole on green hills with the sun overhead. Below are a Checkpoints row listing Desk and Kitchen, 47 min to spare with a Dip in button, and today’s list totaling 49 min: your walk, 6,240 steps, 15 min; a workout of 24 minutes, 24 min; mindful minutes, 10 min; two sessions, 8:12 to 8:27 for −15 min and 12:05 to 12:41 for −36 min; and 49 min carried over from Saturday.',
+    'Up For Air’s Home screen at 1:41 on Sunday, October 11. Under the greeting “Good afternoon!”, a white bunny stands beside its hole on green hills with the sun overhead. Below are a Checkpoints row listing Desk and Kitchen, 47 min to spare with a Dip in button, and the Earned today list totaling 49 min: your walk, 3,720 steps, 9 min; a workout of 10 minutes, 10 min; mindful minutes, 3 minutes, 6 min; a focus block, 25 minutes with the phone down, 15 min; the Gym, here now since 1:19, 9 min; and a session from 11:21 to 11:36, −15 min.',
 };
 
 /** The strip under the hero: ledger lines, activity first, minutes second (default rates). */
@@ -345,16 +344,18 @@ export const features = {
       ],
     },
     /**
-     * src/assets/screens/earn-light-top.png: earn-light.png from the top down to the Daily cap.
-     * This capture is still the Free one (Zones reads "Part of Premium"), and the alt text
-     * describes it as it is. Rewrite the alt text when the Premium capture replaces it.
+     * src/assets/screens/earn-light-top.png: the kit's earn-light.png (the Premium capture,
+     * every way on) from the top down to the Daily cap, cut at 1320 × 2310.
      */
     earn: {
-      alt: 'The Earn tab at 9:41. The plate shows 49 min earned on Sunday beside the standing bunny. Walking (15 min), Workouts (24 min), and Mindful minutes (10 min) are switched on and labeled Enabled, Focus blocks is on and Enabled, and Zones is switched off, labeled “Part of Premium,” with a dimmed 14 min. A note says steps, workouts, and mindful minutes come from Apple Health, and under Limits the Daily cap is 60 min, “All ways together.”',
+      alt: 'The Earn tab at 9:41. The plate reads “Monday · Earned today, 49 min” beside the standing bunny, with a help button at the top right. All five ways are switched on and labeled Enabled: Walking (9 min), Workouts (10 min), Mindful minutes (6 min), Focus blocks (15 min), and Zones (9 min). A note says “Steps, workouts, and mindful minutes come from Apple Health. Tap a row to change its rate, or turn it off.” Under Limits, the Daily cap is 60 min, “All ways together, checkpoints included.”',
     },
-    /** src/assets/screens/unlock-limit-15-light-top.png: unlock-limit-15-light.png down to the note. */
+    /**
+     * src/assets/screens/unlock-limit-15-light-top.png: the kit's unlock-limit-15-light.png
+     * from the top down to the note, cut at 1320 × 1640.
+     */
     limit: {
-      alt: 'The screen that asks how long before you dip in. At the top are Never mind and “Your rabbit holes · 30 min to spare”. A large “15 min” sits over “Back up at 12:16”, then a slider from 1 to 30 and quick picks 5, 10, 15, and 30, with 15 selected, and the note “You only spend the minutes you use. Use all 15 and 15 min stay to spare.”',
+      alt: 'The screen that asks how long before you dip in, at 11:59. At the top are Never mind and “Your rabbit holes · 30 min to spare”. A large “15 min” sits over “Back up at 12:14”, then a slider from 1 to 30 and quick picks 5, 10, 15, and 30, with 15 selected, and the note “You only spend the minutes you use. Use all 15 and 15 min stay to spare.”',
     },
   },
 };
