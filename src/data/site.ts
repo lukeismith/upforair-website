@@ -102,7 +102,7 @@ export const hero = {
     { text: 'or two.' },
   ] satisfies TitleSegment[],
   subtitle:
-    'There’s nothing wrong with that. Up For Air locks yours, so willpower doesn’t have to. Earn minutes with a walk or a workout, then dip in and come back up at a time you choose.',
+    'There’s nothing wrong with that. Up For Air locks yours, so you don’t have to rely on willpower. Earn minutes with a walk or a workout, then dip in and come back up at a time you choose.',
   cta: brand.primaryCta,
   note: `Free ${brand.platformNote}`,
   /**
@@ -295,15 +295,15 @@ export const features = {
   items: [
     {
       title: 'Rabbit holes, locked.',
-      body: 'Lock every app, whole category, and website that swallows you. Screen Time keeps them locked, in every browser too, and we never see what you do inside them.',
+      body: 'As many as you like: apps, whole categories like Games or Social, and websites in every browser. Screen Time keeps them locked, and we never see what you do inside them.',
     },
     {
       title: 'Five ways up top.',
-      body: 'Walking, workouts, and mindful minutes come from Apple Health. A focus block needs nothing at all, and zones earn minutes when you arrive somewhere you chose. A Daily cap keeps a big day up top from turning into a long night.',
+      body: 'A walk, a workout, a few mindful minutes, a focus block with your phone down, or a visit to the gym. Each one earns minutes, and your Daily cap keeps a big day up top from becoming a long night.',
     },
     {
       title: 'Back up at 3:40.',
-      body: 'Choose how long. The end is a clock time, a Live Activity counts you back up, and you only spend the minutes you use.',
+      body: 'Choose how long, and see the exact time you’ll be back up. You only spend the minutes you use, so ending early keeps the rest to spare.',
     },
   ],
   /** The three panels of the illustration, one per feature. */
@@ -362,12 +362,12 @@ export const features = {
 export const more = {
   tag: 'More up top',
   title: 'Little things that <em>keep you up top.</em>',
-  subtitle: 'Nothing here is a game, a coach, or a lecture.',
+  subtitle: 'It works where your day happens: at your desk, at the gym, and on your Lock Screen.',
   items: [
     {
       icon: 'checkpoint',
       title: 'Checkpoints',
-      body: 'Tap your tag or scan your card to start. Do it again to stop. Keep an NFC tag or a printed card wherever the habit lives, like your desk or your bedside. Until you stop, your rabbit holes stay locked. Stay 30 minutes or more and you earn 10 min.',
+      body: 'Keep an NFC tag or a printed card where the habit lives, like your desk or your bedside. Tap your tag or scan your card to start. Do it again to stop. Until you do, your rabbit holes stay locked, and 30 minutes or more earns 10 min.',
     },
     {
       icon: 'zone',
@@ -382,17 +382,17 @@ export const more = {
     {
       icon: 'bell',
       title: 'Back up at 3:40, everywhere',
-      body: 'A Live Activity counts you back up on the Lock Screen and in the Dynamic Island. Widgets show what’s to spare, Control Center starts a focus block in one tap, and Siri can tell you how many minutes you have.',
+      body: 'A Live Activity shows the countdown to your time on the Lock Screen and in the Dynamic Island. Widgets show your minutes to spare, Control Center starts a focus block in one tap, and Siri can tell you how many minutes you have.',
     },
     {
       icon: 'carrot',
       title: 'Your accountability bunny',
-      body: 'Give it a name. It waves hello, peeks from its hole while you dip in, and can ask you to stay up top before you go. Never mind is always one tap away, and turning back never makes the next unlock harder.',
+      body: 'Give it a name, and it keeps you company. It waves hello, shares a tip now and then, and peeks from its hole while you dip in.',
     },
     {
       icon: 'health',
       title: 'No account, no server',
-      body: 'Everything stays on your device. Steps, workouts, and mindful minutes are read from Apple Health and never changed, and we never see what you do in the apps you lock.',
+      body: 'No ads either, and nothing is ever sent to us. Your minutes, your zones, and your Health data stay on your device.',
     },
   ],
 };
@@ -400,7 +400,11 @@ export const more = {
 export const pricing = {
   tag: 'Pricing',
   title: `Try it all, <em>free for ${trialDays} days.</em>`,
-  subtitle: `Premium includes everything on this page, and the yearly plan starts with ${trialDays} days free. We’ll remind you before the trial ends.`,
+  /**
+   * The app reminds you before the trial ends (the reminder is being built, and it ships with
+   * the paywall). The site names no number of days, because the trial can change.
+   */
+  subtitle: 'Premium is everything on this page. We’ll remind you before your free trial ends.',
   /** 46% is $44.99 against 12 × $6.99. The app itself prints no percent. */
   toggle: { monthly: 'Monthly', yearly: 'Yearly', badge: 'Save 46%', srLabel: 'Bill yearly' },
   free: {
@@ -427,11 +431,7 @@ export const pricing = {
       price: prices.yearly,
       period: 'a year',
       perMonth: `${prices.yearlyPerMonth} a month`,
-      /**
-       * The app reminds you before the trial ends (the reminder is being built, and it ships
-       * with the paywall). The site names no number of days, because the trial can change.
-       */
-      note: `Free for ${trialDays} days, then ${prices.yearly} a year. We’ll remind you before it ends. Cancel anytime.`,
+      note: `Free for ${trialDays} days, then ${prices.yearly} a year. Cancel anytime.`,
     },
     description: 'Every way to earn minutes, unlimited rabbit holes, zones, and checkpoints.',
     cta: { monthly: 'Subscribe monthly', yearly: `Start ${trialDays} days free`, href: brand.primaryCta.href },
@@ -452,11 +452,11 @@ export const faq = {
   items: [
     {
       q: 'Does it really lock apps?',
-      a: 'Yes. Screen Time keeps your rabbit holes locked until you choose to dip in. Apple asks you first, and we never see what you do in those apps.',
+      a: `Yes. Screen Time, built into ${devices}, keeps your rabbit holes locked until you spend minutes to dip in. Apple asks your permission first.`,
     },
     {
       q: 'What if I have nothing to spare?',
-      a: 'Then the unlock offers a focus block instead. 25 minutes with your phone down earns 15, and a 4,000-step walk earns 10.',
+      a: 'Then Up For Air offers you a focus block instead. 25 minutes with your phone down earns 15 min, and a 4,000-step walk earns 10.',
     },
     {
       q: 'How much does it cost?',
@@ -464,23 +464,23 @@ export const faq = {
     },
     {
       q: 'Is there a limit to what I can earn?',
-      a: 'Only the one you choose. Your Daily cap starts at 60 min a day, for all ways together, checkpoints included, and you can choose 30, 60, 90, or 120 min, or no cap. It keeps a long walk from turning into a long scroll.',
+      a: 'Only the ones you choose. Your Daily cap starts at 60 min for all the ways together, and you can choose 30, 90, or 120 min, or no cap. Earning also stops while you have 180 min to spare, and you can change that too. Both keep a long walk from becoming a long scroll.',
     },
     {
       q: 'What does Up For Air read from Apple Health?',
-      a: 'Steps, workouts, and mindful minutes, read only, on your device. From a workout it reads only how long it lasted, and it never changes your Health data. Zones never record where you go, only that you reached one of your zones.',
+      a: 'Steps, workouts, and mindful minutes, read only, on your device. From a workout it reads only how long it lasted, and it never changes your Health data.',
     },
     {
       q: 'What if I skip a day?',
-      a: 'Nothing happens. Your week up top shows seven suns sized by the minutes you earned, with a small dot for a rest day. There’s no chain to keep and nothing to break.',
+      a: 'Nothing happens. A rest day is a small dot in your week up top, and you keep every minute you have to spare.',
     },
     {
-      q: 'What’s a checkpoint?',
-      a: 'A tag or a card you keep somewhere real, like your desk. Tap your tag or scan your card to start: your rabbit holes stay locked, and minutes can’t open them. Do it again to stop. Stay 30 minutes or more and you earn 10 min. NTAG215 and NTAG213 stickers are confirmed to work.',
+      q: 'Will it lock my whole phone?',
+      a: 'No. Only the rabbit holes you choose are locked, and everything else on your iPhone or iPad works as it always does.',
     },
     {
       q: 'Which devices does it work on?',
-      a: `Any iPhone or iPad running ${requirements} that can use Screen Time. There’s no Android version.`,
+      a: `Any iPhone or iPad running ${requirements}.`,
     },
   ],
 };
@@ -489,7 +489,8 @@ export const cta = {
   title: 'Ready to come <em>up for air?</em>',
   subtitle: 'Lock a rabbit hole, earn some minutes up top, and see what 3:40 feels like.',
   button: brand.primaryCta,
-  note: `${live ? 'Free on the App Store' : 'Free at launch'} ${brand.platformNote}`,
+  /** The same line as under the hero, so that it fits on one line on a phone. */
+  note: `Free ${brand.platformNote}`,
 };
 
 export const footer = {
@@ -572,7 +573,7 @@ export const help = {
         },
         {
           q: 'What’s Most to spare?',
-          a: 'The most minutes you can have to spare at once. It starts at 180 min, and you can change it in Settings. When you reach it, earning stops until you spend some, and nothing is taken away.',
+          a: 'The most minutes you can have to spare at once. It starts at 180 min, and you can change it in Settings. When you reach it, earning stops until you spend some, and you keep every minute you have.',
         },
         {
           q: 'Where do steps, workouts, and mindful minutes come from?',

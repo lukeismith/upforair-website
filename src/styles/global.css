@@ -199,6 +199,17 @@ ol {
   list-style: none;
 }
 
+/*
+ * Body text avoids one word alone on its last line, where the browser can help. The
+ * longhand leaves `white-space: nowrap` (the wrap mode) alone.
+ */
+p,
+li,
+.body,
+.lead {
+  text-wrap-style: pretty;
+}
+
 :focus-visible {
   outline: 2px solid var(--terracotta);
   outline-offset: 3px;
