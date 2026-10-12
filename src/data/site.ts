@@ -8,8 +8,14 @@
  * - no shame words; exclamation marks only where the bunny is truly glad (praise and
  *   celebration, as in its own lines), never in headlines, instructions or prices;
  * - American English, the serial comma, curly quotes and apostrophes.
- * The screenshots predate the "earned" wording, so take numbers and words from facts.md,
- * not from the pictures.
+ * The site sells the whole app (Luke, 2026-10-11): describe every feature as something
+ * Up For Air does, and write to what a customer wants (time and attention back without a
+ * fight with willpower, minutes that feel good to earn, a kind bunny, privacy). The
+ * differences between Free and Premium appear only in the pricing cards; nowhere else says
+ * "on Premium", "Free has" or "one way at a time". The screenshots show Up For Air Premium,
+ * and `footer.screenshotNote` says so. The device is "iPhone and iPad", with iOS 18 or
+ * iPadOS 18 or later. Some screenshots predate the "earned" wording, so take numbers and
+ * words from facts.md, not from the pictures.
  */
 
 /**
@@ -25,19 +31,35 @@ const live = launch.state === 'live';
 const storeHref = live ? launch.appStoreUrl : '/#newsletter';
 const storeLabel = live ? 'Get the app' : 'Get notified';
 
+/**
+ * Prices and the trial, from the app's local StoreKit file (Config/Sidequest.storekit).
+ * Check them against App Store Connect before launch. Every sentence that names a price or
+ * the trial length reads it from here, so a change is one edit.
+ */
+const prices = { yearly: '$44.99', monthly: '$6.99', yearlyPerMonth: '$3.75' };
+const trialDays = 21;
+
+/** Up For Air runs on iPhone and iPad (Luke, 2026-10-11). */
+const devices = 'iPhone and iPad';
+const requirements = 'iOS 18 or iPadOS 18 or later';
+
 export const brand = {
   name: 'Up For Air',
   company: 'Temperanda LLC',
   title: 'Up For Air – Earn your scroll',
   description: `Everyone has a rabbit hole or two. Up For Air locks yours, counts the minutes you earn up top, and brings you back up at a time you choose. ${
-    live ? 'Free on the App Store for iPhone.' : 'Coming soon to the App Store for iPhone.'
+    live ? `Free on the App Store for ${devices}.` : `Coming soon to the App Store for ${devices}.`
   }`,
   tagline: 'Earn your scroll.',
   /** The accessible name of the wordmark links in the header and the footer. */
   homeLabel: 'Up For Air home',
   /** Replace with the real support address before launch. */
   contactEmail: 'hello@temperanda.com',
-  platformNote: 'iPhone · iOS 18 or later',
+  /**
+   * "for iPhone and iPad · iOS 18 or iPadOS 18 or later", after a word such as "Free". The
+   * requirements keep no-break spaces, so a narrow screen breaks the line at the dot.
+   */
+  platformNote: `for ${devices} · ${requirements.replace(/ /g, '\u00a0')}`,
   primaryCta: { label: storeLabel, href: storeHref, apple: live },
   /** The social image in public/og.png (1200 × 630), from the app repo's marketing kit. */
   ogImage: {
@@ -80,9 +102,9 @@ export const hero = {
     { text: 'or two.' },
   ] satisfies TitleSegment[],
   subtitle:
-    'There’s nothing wrong with that. Up For Air locks yours and counts the minutes you earn up top. Then it brings you back up at a time you choose.',
+    'There’s nothing wrong with that. Up For Air locks yours, so willpower doesn’t have to. Earn minutes with a walk or a workout, then dip in and come back up at a time you choose.',
   cta: brand.primaryCta,
-  note: `Free, with Premium for more ways up top. ${brand.platformNote}.`,
+  note: `Free ${brand.platformNote}`,
   /**
    * The phone shows src/assets/screens/home-day-light.png, a simulator capture of Home.
    * It was taken before minutes were "earned", so it still reads "Made today". The alt
@@ -114,7 +136,7 @@ export const howItWorks = {
   steps: [
     {
       title: 'Choose your rabbit holes.',
-      body: 'Lock the apps, categories, and websites that swallow you. Screen Time keeps them locked until you choose to open them.',
+      body: 'Lock the apps, whole categories, and websites that swallow you. Screen Time keeps them locked until you choose to open them.',
       art: 'scene-in-hole',
     },
     {
@@ -273,11 +295,11 @@ export const features = {
   items: [
     {
       title: 'Rabbit holes, locked.',
-      body: 'Two apps, two categories, and two websites for free, or many more on Premium. Screen Time keeps them locked, in every browser too.',
+      body: 'Lock every app, whole category, and website that swallows you. Screen Time keeps them locked, in every browser too, and we never see what you do inside them.',
     },
     {
       title: 'Five ways up top.',
-      body: 'Walking, workouts, and mindful minutes come from Apple Health. A focus block needs nothing at all. On Premium, zones earn minutes when you arrive somewhere you chose. They all share one Daily cap.',
+      body: 'Walking, workouts, and mindful minutes come from Apple Health. A focus block needs nothing at all, and zones earn minutes when you arrive somewhere you chose. A Daily cap keeps a big day up top from turning into a long night.',
     },
     {
       title: 'Back up at 3:40.',
@@ -287,11 +309,13 @@ export const features = {
   /** The three panels of the illustration, one per feature. */
   panels: {
     /**
-     * An HTML replica of the Rabbit holes page on Free. The simulator has no Screen Time,
-     * so its capture shows empty groups. The wording here is the app's own
-     * (RabbitHoles.xcstrings), and the app icons are stand-ins. As in RabbitHolesView, apps
-     * and categories show their icon with the padlock badge, and a website shows a plain
-     * globe in ink-2 (`glyph`), with no tile and no badge.
+     * An HTML replica of the Rabbit holes page on Premium, like every screenshot on the
+     * site. The simulator has no Screen Time, so its capture shows empty groups. The wording
+     * here is the app's own (RabbitHoles.xcstrings: holes.group.apps and its siblings,
+     * holes.add.*), and the app icons are stand-ins. As in RabbitHolesView, apps and
+     * categories show their icon with the padlock badge, and a website shows a plain globe
+     * in ink-2 (`glyph`), with no tile and no badge. On Premium every group ends with its
+     * add row, and the page has no footer.
      */
     holes: {
       time: '9:41',
@@ -299,33 +323,32 @@ export const features = {
       edit: 'Edit',
       groups: [
         {
-          title: 'Apps · 2 of 2 free',
+          title: 'Apps · 3',
           rows: [
             { initials: 'IG', name: 'Instagram', detail: 'Matched to Instagram', color: 'linear-gradient(135deg, #f9a03f, #e1306c 55%, #7b3fe4)' },
             { initials: 'TT', name: 'TikTok', detail: 'Matched to TikTok', color: '#111111' },
+            { initials: 'YT', name: 'YouTube', detail: 'Matched to YouTube', color: '#e62117' },
           ],
-          limit: {
-            title: 'Two is the free allowance for apps.',
-            before: 'Swap one for another anytime, or ',
-            link: 'see Premium',
-            after: ' for more.',
-          },
+          add: 'Lock another app…',
         },
         {
-          title: 'Categories · 1 of 2 free',
+          title: 'Categories · 1',
           rows: [{ icon: 'play', name: 'Games', color: '#5b8def' }],
           add: 'Lock a whole category…',
           addDetail: 'Social, Games, Entertainment, and so on, as Apple groups them.',
         },
         {
-          title: 'Websites · 1 of 2 free',
-          rows: [{ glyph: 'globe', name: 'youtube.com' }],
+          title: 'Websites · 1',
+          rows: [{ glyph: 'globe', name: 'reddit.com' }],
           add: 'Lock a website…',
         },
       ],
-      footer: 'Free locks up to two apps, two categories, and two websites. Premium has no limit.',
     },
-    /** src/assets/screens/earn-light-top.png: earn-light.png from the top down to the Daily cap. */
+    /**
+     * src/assets/screens/earn-light-top.png: earn-light.png from the top down to the Daily cap.
+     * This capture is still the Free one (Zones reads "Part of Premium"), and the alt text
+     * describes it as it is. Rewrite the alt text when the Premium capture replaces it.
+     */
     earn: {
       alt: 'The Earn tab at 9:41. The plate shows 49 min earned on Sunday beside the standing bunny. Walking (15 min), Workouts (24 min), and Mindful minutes (10 min) are switched on and labeled Enabled, Focus blocks is on and Enabled, and Zones is switched off, labeled “Part of Premium,” with a dimmed 14 min. A note says steps, workouts, and mindful minutes come from Apple Health, and under Limits the Daily cap is 60 min, “All ways together.”',
     },
@@ -338,19 +361,18 @@ export const features = {
 
 export const more = {
   tag: 'More up top',
-  title: 'Small things that make <em>the loop hold.</em>',
+  title: 'Little things that <em>keep you up top.</em>',
   subtitle: 'Nothing here is a game, a coach, or a lecture.',
   items: [
     {
       icon: 'checkpoint',
       title: 'Checkpoints',
-      body: 'Tap your tag or scan your card to start. Do it again to stop. An NFC sticker or a printed card, kept where the habit lives, keeps your rabbit holes locked until you stop. Stay 30 minutes or more and you earn 10 min.',
+      body: 'Tap your tag or scan your card to start. Do it again to stop. Keep an NFC tag or a printed card wherever the habit lives, like your desk or your bedside. Until you stop, your rabbit holes stay locked. Stay 30 minutes or more and you earn 10 min.',
     },
     {
       icon: 'zone',
       title: 'Zones',
-      body: 'Arriving at the gym earns 5 min, and every 5 minutes you stay earns 1 more. With location set to Always, it counts even when the app is closed. Your zones and your location stay on your phone.',
-      badge: 'Premium',
+      body: 'Draw a circle around the gym, the library, or the park. Arriving earns 5 min, and every 5 minutes you stay earns 1 more. With location set to Always, it counts even when the app is closed. We never record where you go.',
     },
     {
       icon: 'sun',
@@ -360,25 +382,25 @@ export const more = {
     {
       icon: 'bell',
       title: 'Back up at 3:40, everywhere',
-      body: 'A Live Activity and the Dynamic Island count you back up. Widgets show what’s to spare, and Control Center starts a focus block in one tap.',
+      body: 'A Live Activity counts you back up on the Lock Screen and in the Dynamic Island. Widgets show what’s to spare, Control Center starts a focus block in one tap, and Siri can tell you how many minutes you have.',
     },
     {
-      icon: 'x',
-      title: 'Never mind',
-      body: 'One tap out, top-left on every screen of the unlock flow. Nothing starts, and it never makes the next unlock harder.',
+      icon: 'carrot',
+      title: 'Your accountability bunny',
+      body: 'Give it a name. It waves hello, peeks from its hole while you dip in, and can ask you to stay up top before you go. Never mind is always one tap away, and turning back never makes the next unlock harder.',
     },
     {
       icon: 'health',
-      title: 'Your data stays on your phone',
-      body: 'Up For Air has no account and no server. Steps, workouts, and mindful minutes are read from Apple Health and never changed, and we never see what you do in the apps you lock.',
+      title: 'No account, no server',
+      body: 'Everything stays on your device. Steps, workouts, and mindful minutes are read from Apple Health and never changed, and we never see what you do in the apps you lock.',
     },
   ],
 };
 
 export const pricing = {
   tag: 'Pricing',
-  title: 'Free is a <em>real choice.</em>',
-  subtitle: 'Free keeps the whole loop: lock a rabbit hole, earn minutes, dip in. Premium adds more ways up top.',
+  title: `Try it all, <em>free for ${trialDays} days.</em>`,
+  subtitle: `Premium includes everything on this page, and the yearly plan starts with ${trialDays} days free. We’ll remind you before the trial ends.`,
   /** 46% is $44.99 against 12 × $6.99. The app itself prints no percent. */
   toggle: { monthly: 'Monthly', yearly: 'Yearly', badge: 'Save 46%', srLabel: 'Bill yearly' },
   free: {
@@ -400,20 +422,19 @@ export const pricing = {
   premium: {
     name: 'Premium',
     bestValue: 'Best value',
-    monthly: { price: '$6.99', period: 'a month', note: 'Cancel anytime.' },
+    monthly: { price: prices.monthly, period: 'a month', note: 'Cancel anytime.' },
     yearly: {
-      price: '$44.99',
+      price: prices.yearly,
       period: 'a year',
-      perMonth: '$3.75 a month',
-      trialDays: 21,
+      perMonth: `${prices.yearlyPerMonth} a month`,
       /**
-       * The paywall also promises a reminder two days before the trial ends, but nothing
-       * in the app sends one yet, so the site leaves that sentence out until it does.
+       * The app reminds you before the trial ends (the reminder is being built, and it ships
+       * with the paywall). The site names no number of days, because the trial can change.
        */
-      note: 'Free for 21 days, then $44.99 a year. Cancel anytime.',
+      note: `Free for ${trialDays} days, then ${prices.yearly} a year. We’ll remind you before it ends. Cancel anytime.`,
     },
     description: 'Every way to earn minutes, unlimited rabbit holes, zones, and checkpoints.',
-    cta: { monthly: 'Subscribe monthly', yearly: 'Start 21 days free', href: brand.primaryCta.href },
+    cta: { monthly: 'Subscribe monthly', yearly: `Start ${trialDays} days free`, href: brand.primaryCta.href },
     featuresLabel: 'Free, plus:',
     features: [
       'All five ways to earn minutes, at once',
@@ -438,16 +459,16 @@ export const faq = {
       a: 'Then the unlock offers a focus block instead. 25 minutes with your phone down earns 15, and a 4,000-step walk earns 10.',
     },
     {
-      q: 'Do I have to pay?',
-      a: 'No. Free locks two apps, two categories, and two websites, and keeps one way to earn minutes on. Premium adds every way at once, unlimited rabbit holes, zones, and more checkpoints.',
+      q: 'How much does it cost?',
+      a: `Up For Air is free to download. Premium, with everything on this page, is ${prices.yearly} a year with the first ${trialDays} days free, or ${prices.monthly} a month. We’ll remind you before the trial ends, and you can cancel anytime. The plans above show what each one includes.`,
     },
     {
       q: 'Is there a limit to what I can earn?',
-      a: 'Yes, a Daily cap you choose: 30, 60, 90, or 120 min a day, or no cap. It starts at 60, for all ways together, checkpoints included. It keeps a long walk from turning into a long scroll.',
+      a: 'Only the one you choose. Your Daily cap starts at 60 min a day, for all ways together, checkpoints included, and you can choose 30, 60, 90, or 120 min, or no cap. It keeps a long walk from turning into a long scroll.',
     },
     {
       q: 'What does Up For Air read from Apple Health?',
-      a: 'Steps, workouts, and mindful minutes, read only, on your phone. From a workout it reads only how long it lasted, and it never changes your Health data. Zones never record where you go, only that you reached one of your zones.',
+      a: 'Steps, workouts, and mindful minutes, read only, on your device. From a workout it reads only how long it lasted, and it never changes your Health data. Zones never record where you go, only that you reached one of your zones.',
     },
     {
       q: 'What if I skip a day?',
@@ -458,8 +479,8 @@ export const faq = {
       a: 'A tag or a card you keep somewhere real, like your desk. Tap your tag or scan your card to start: your rabbit holes stay locked, and minutes can’t open them. Do it again to stop. Stay 30 minutes or more and you earn 10 min. NTAG215 and NTAG213 stickers are confirmed to work.',
     },
     {
-      q: 'Which iPhones does it work on?',
-      a: 'Any iPhone running iOS 18 or later that can use Screen Time. There’s no Android version.',
+      q: 'Which devices does it work on?',
+      a: `Any iPhone or iPad running ${requirements} that can use Screen Time. There’s no Android version.`,
     },
   ],
 };
@@ -468,7 +489,7 @@ export const cta = {
   title: 'Ready to come <em>up for air?</em>',
   subtitle: 'Lock a rabbit hole, earn some minutes up top, and see what 3:40 feels like.',
   button: brand.primaryCta,
-  note: `${live ? 'Free on the App Store' : 'Free at launch'} · ${brand.platformNote}`,
+  note: `${live ? 'Free on the App Store' : 'Free at launch'} ${brand.platformNote}`,
 };
 
 export const footer = {
@@ -498,6 +519,11 @@ export const footer = {
     },
   ],
   copyright: `© ${new Date().getFullYear()} ${brand.company}`,
+  /**
+   * Every screenshot on the site is taken on Up For Air Premium, so that it shows the whole
+   * app. This quiet line in the footer says so, for anyone who looks.
+   */
+  screenshotNote: 'Screenshots show Up For Air Premium.',
   /** The bunny and the landscapes are placeholder art until the illustrator's work lands. */
   artNote: 'Artwork shown is a placeholder.',
   /**
@@ -520,11 +546,11 @@ export const help = {
       items: [
         {
           q: 'What do I need?',
-          a: 'An iPhone running iOS 18 or later. Up For Air needs Screen Time to keep an app locked until you choose to open it, so setup waits until you allow it. Apple asks you first, and we never see what you do in those apps.',
+          a: `An iPhone or iPad running ${requirements}. Up For Air needs Screen Time to keep an app locked until you choose to open it, so setup waits until you allow it. Apple asks you first, and we never see what you do in those apps.`,
         },
         {
           q: 'What happens in setup?',
-          a: 'Eight short steps: name your bunny, see how minutes are earned, see how they’re spent, allow Screen Time, choose the ways you want to earn minutes, choose your Daily cap, choose your rabbit holes, and match your apps so we can open them for you. Then you choose Free or Premium.',
+          a: 'Eight short steps: name your bunny, see how minutes are earned, see how they’re spent, allow Screen Time, choose the ways you want to earn minutes, choose your Daily cap, choose your rabbit holes, and match your apps so we can open them for you. Then you choose a plan.',
         },
         {
           q: 'Does the app explain itself?',
@@ -538,7 +564,7 @@ export const help = {
       items: [
         {
           q: 'What are the rates?',
-          a: '400 steps earn a minute, and you can choose anything from 250 to 2,000. A minute of workout earns a minute. A mindful minute earns two. A 25-minute focus block earns 15. On Premium, arriving at a zone earns 5, then 1 for every 5 minutes you stay. You can change the rates for walking, workouts, mindful minutes, and focus blocks on the Earn tab.',
+          a: '400 steps earn a minute, and you can choose anything from 250 to 2,000. A minute of workout earns a minute. A mindful minute earns two. A 25-minute focus block earns 15. Arriving at a zone earns 5, then 1 for every 5 minutes you stay, and a checkpoint held for 30 minutes or more earns 10. You can change the rates for walking, workouts, mindful minutes, and focus blocks on the Earn tab.',
         },
         {
           q: 'Is there a limit?',
@@ -550,11 +576,15 @@ export const help = {
         },
         {
           q: 'Where do steps, workouts, and mindful minutes come from?',
-          a: 'From Apple Health, on your phone only. Up For Air reads them and never writes to Health. On Free, one way to earn minutes is on at a time. Turning a way off keeps what you already earned.',
+          a: 'From Apple Health, on your device only. Up For Air reads them and never writes to Health. Turning a way off keeps what you already earned.',
         },
         {
           q: 'What’s a focus block?',
           a: 'Phone down for 15, 25, 45, or 60 minutes. You earn the minutes when the timer ends, not before. Stop early and you earn nothing.',
+        },
+        {
+          q: 'How do zones work?',
+          a: 'Draw a circle on the map around a place you go, like the gym or the library. Arriving earns 5 min, and every 5 minutes you stay earns 1 more. With location set to Always, arrivals count even when the app is closed. We never record where you go, only that you reached one of your zones.',
         },
       ],
     },
@@ -564,7 +594,7 @@ export const help = {
       items: [
         {
           q: 'What can I lock?',
-          a: 'Apps, whole categories as Apple groups them (Social, Games, Entertainment, and so on), and websites by name in every browser. Free locks two of each kind. Premium has no limit of its own, but Screen Time stops locking above about 50 items, and the app tells you when you get close.',
+          a: 'Apps, whole categories as Apple groups them (Social, Games, Entertainment, and so on), and websites by name in every browser. Screen Time itself stops locking above about 50 items, and the app tells you when you get close.',
         },
         {
           q: 'What does a session do?',
@@ -582,7 +612,7 @@ export const help = {
       items: [
         {
           q: 'What are pauses?',
-          a: 'A pause is a small moment before you choose how long. Quick sum gives you one sum to solve. In the Guilt trip, the bunny asks you to stay, and you hold a reply to choose it. Deep breath guides one slow breath. A short poem types one public-domain poem. None is on until you turn it on, every pause is on Free, and each unlock shows one, picked at random.',
+          a: 'A pause is a small moment before you choose how long. Quick sum gives you one sum to solve. In the Guilt trip, the bunny asks you to stay, and you hold a reply to choose it. Deep breath guides one slow breath. A short poem types one public-domain poem. None is on until you turn it on, and each unlock shows one, picked at random.',
         },
         {
           q: 'What are extra pauses?',
@@ -600,11 +630,15 @@ export const help = {
         },
         {
           q: 'How many can I have?',
-          a: 'Free includes one checkpoint. Premium adds as many as you like.',
+          a: 'As many as you like. Name each one for where it lives, like Desk, Kitchen, or Front door.',
         },
         {
           q: 'Which NFC tags can I use?',
-          a: 'Any NFC tag that can be written to and holds more than 128 bytes. Up For Air writes one link on it and nothing else. NTAG215 and NTAG213 tags are confirmed to work. A read-only tag, a bank card, or a transit card won’t.',
+          a: 'Any NFC tag that can be written to and holds more than 128 bytes. Up For Air writes one link on it and nothing else. NTAG215 and NTAG213 tags are confirmed to work. A read-only tag, a bank card, or a transit card won’t. Tags need an iPhone, because iPad can’t read NFC. A printed card works on both.',
+        },
+        {
+          q: 'Where can I get tags?',
+          a: 'Search for “NTAG215” stickers from an online store you trust. They often cost less than $1 each. Official Up For Air tags are coming soon.',
         },
         {
           q: 'What if I lose my tag?',
@@ -617,20 +651,16 @@ export const help = {
       title: 'Premium',
       items: [
         {
-          q: 'What does Premium add?',
-          a: 'Every way to earn minutes at once, unlimited rabbit holes, zones, and more checkpoints. Free keeps the whole loop and stays free.',
+          q: 'What’s in Premium?',
+          a: 'Everything Up For Air can do: all five ways to earn minutes, as many rabbit holes and checkpoints as you like, and zones. The pricing on the home page lists both plans in full.',
         },
         {
           q: 'How much is it?',
-          a: '$44.99 a year, with the first 21 days free, or $6.99 a month.',
+          a: `${prices.yearly} a year, with the first ${trialDays} days free, or ${prices.monthly} a month. If you start the free trial, we’ll remind you before it ends.`,
         },
         {
           q: 'How do I cancel?',
-          a: 'Premium is an App Store subscription, so you manage or cancel it in your Apple Account settings, anytime. Premium stays until the period ends, and we never delete the minutes you earned.',
-        },
-        {
-          q: 'What happens if I switch to Free?',
-          a: 'You keep two of each kind of rabbit hole, and you still earn and spend minutes the same way, with one way at a time. Zones stay listed but stop counting.',
+          a: 'Premium is an App Store subscription, so you manage or cancel it in your Apple Account settings, anytime. Premium stays until the period ends. After that, the app keeps working, and we never delete the minutes you earned.',
         },
       ],
     },
