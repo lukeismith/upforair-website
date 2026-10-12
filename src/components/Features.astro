@@ -5,8 +5,8 @@
  * to switch. Each panel is an app screen on the app's own paper. Earn and the limit
  * screen are real simulator captures, cut off below the part that matters. The
  * simulator has no Screen Time, so its Rabbit holes page is empty, and that panel is an
- * HTML replica of the page with the app's own words, drawn at the same scale as the
- * captures (one app point is 1/440 of the screen's width).
+ * HTML replica of the page on Premium with the app's own words, drawn at the same scale as
+ * the captures (one app point is 1/440 of the screen's width).
  */
 import { Image } from 'astro:assets';
 import SectionHeader from './SectionHeader.astro';
@@ -86,17 +86,7 @@ const screenSizes = '(max-width: 443.98px) calc(100vw - 84px), 360px';
                           </span>
                         </li>
                       ))}
-                      {'limit' in group && group.limit && (
-                        <li class="rh__row rh__row--text">
-                          <span class="rh__text">
-                            <span class="rh__limit">{group.limit.title}</span>
-                            <span class="rh__detail">
-                              {group.limit.before}<span class="rh__link">{group.limit.link}</span>{group.limit.after}
-                            </span>
-                          </span>
-                        </li>
-                      )}
-                      {'add' in group && group.add && (
+                      {group.add && (
                         <li class="rh__row rh__row--text">
                           <span class="rh__text rh__text--add">
                             <span class="rh__add">{group.add}</span>
@@ -107,8 +97,6 @@ const screenSizes = '(max-width: 443.98px) calc(100vw - 84px), 360px';
                     </ul>
                   </div>
                 ))}
-
-                <p class="rh__footer">{holes.footer}</p>
               </div>
             </div>
           </div>
@@ -401,25 +389,10 @@ const screenSizes = '(max-width: 443.98px) calc(100vw - 84px), 360px';
     line-height: 1.4;
     color: var(--ink-2);
   }
-  .rh__limit {
-    font-size: calc(16 * var(--pt));
-    color: var(--ink-2);
-  }
-  .rh__link {
-    color: var(--terracotta);
-    font-weight: 600;
-  }
   .rh__add {
     color: var(--terracotta);
     font-weight: 600;
     font-size: calc(16 * var(--pt));
-  }
-  .rh__footer {
-    margin-top: calc(10 * var(--pt));
-    padding: 0 calc(18 * var(--pt));
-    font-size: calc(13 * var(--pt));
-    line-height: 1.4;
-    color: var(--ink-2);
   }
 
   @media (max-width: 1199.98px) {
