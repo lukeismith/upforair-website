@@ -110,7 +110,7 @@ export const hero = {
    * capture of Home on Premium (2026-10-12), whole and uncropped.
    */
   screenAlt:
-    'Up For Air’s Home screen at 1:41 on Sunday, October 11. Under the greeting “Good afternoon!”, a white bunny stands beside its hole on green hills with the sun overhead. Below are a Checkpoints row listing Desk and Kitchen, 47 min to spare with a Dip in button, and the Earned today list totaling 49 min: your walk, 3,720 steps, 9 min; a workout of 10 minutes, 10 min; mindful minutes, 3 minutes, 6 min; a focus block, 25 minutes with the phone down, 15 min; the Gym, here now since 1:19, 9 min; and a session from 11:21 to 11:36, −15 min.',
+    'Up For Air’s Home screen at 1:41 on Monday, October 12. Under the greeting “Good afternoon!”, a white bunny stands beside its hole on green hills with the sun overhead. Below are a Checkpoints row listing Desk and Kitchen, 47 min to spare with a Dip in button, and the Earned today list totaling 49 min: your walk, 3,720 steps, 9 min; a workout of 10 minutes, 10 min; mindful minutes, 3 minutes, 6 min; a focus block, 25 minutes with the phone down, 15 min; the Gym, here now since 1:19, 9 min; and a session from 11:21 to 11:36, −15 min.',
 };
 
 /** The strip under the hero: ledger lines, activity first, minutes second (default rates). */
@@ -355,7 +355,7 @@ export const features = {
      * from the top down to the note, cut at 1320 × 1640.
      */
     limit: {
-      alt: 'The screen that asks how long before you dip in, at 11:59. At the top are Never mind and “Your rabbit holes · 30 min to spare”. A large “15 min” sits over “Back up at 12:14”, then a slider from 1 to 30 and quick picks 5, 10, 15, and 30, with 15 selected, and the note “You only spend the minutes you use. Use all 15 and 15 min stay to spare.”',
+      alt: 'The screen that asks how long before you dip in, at 9:41. At the top are Never mind and “Your rabbit holes · 30 min to spare”. A large “15 min” sits over “Back up at 9:56”, then a slider from 1 to 30 and quick picks 5, 10, 15, and 30, with 15 selected, and the note “You only spend the minutes you use. Use all 15 and 15 min stay to spare.”',
     },
   },
 };
