@@ -33,6 +33,8 @@ export const brand = {
     live ? 'Free on the App Store for iPhone.' : 'Coming soon to the App Store for iPhone.'
   }`,
   tagline: 'Earn your scroll.',
+  /** The accessible name of the wordmark links in the header and the footer. */
+  homeLabel: 'Up For Air home',
   /** Replace with the real support address before launch. */
   contactEmail: 'hello@temperanda.com',
   platformNote: 'iPhone · iOS 18 or later',
@@ -57,6 +59,13 @@ export const sections = [
 export const nav = {
   help: { label: 'Help', href: '/help' },
   cta: brand.primaryCta,
+  /** Accessible names for the header's two navigation landmarks and the menu button. */
+  primaryLabel: 'Primary',
+  mobileLabel: 'Mobile',
+  openMenu: 'Open menu',
+  closeMenu: 'Close menu',
+  /** The pill navigation that appears on scroll on the home page. */
+  sectionNavLabel: 'Section navigation',
 };
 
 export type TitleSegment = { text: string; serif?: boolean } | { br: true };
@@ -76,10 +85,11 @@ export const hero = {
   note: `Free, with Premium for more ways up top. ${brand.platformNote}.`,
   /**
    * The phone shows src/assets/screens/home-day-light.png, a simulator capture of Home.
-   * It was taken before minutes were "earned", so it still reads "Made today".
+   * It was taken before minutes were "earned", so it still reads "Made today". The alt
+   * text describes the list without quoting that old heading.
    */
   screenAlt:
-    'Up For Air’s Home screen at 1:41 on Sunday, October 11. Under the greeting “Good afternoon!”, a white bunny stands beside its hole on green hills with the sun overhead. Below are a Checkpoints row listing Desk and Kitchen, 47 min to spare with a Dip in button, and the Made today list totaling 49 min: your walk, 6,240 steps, 15 min; a workout of 24 minutes, 24 min; mindful minutes, 10 min; two sessions, 8:12 to 8:27 for −15 min and 12:05 to 12:41 for −36 min; and 49 min carried over from Saturday.',
+    'Up For Air’s Home screen at 1:41 on Sunday, October 11. Under the greeting “Good afternoon!”, a white bunny stands beside its hole on green hills with the sun overhead. Below are a Checkpoints row listing Desk and Kitchen, 47 min to spare with a Dip in button, and today’s list totaling 49 min: your walk, 6,240 steps, 15 min; a workout of 24 minutes, 24 min; mindful minutes, 10 min; two sessions, 8:12 to 8:27 for −15 min and 12:05 to 12:41 for −36 min; and 49 min carried over from Saturday.',
 };
 
 /** The strip under the hero: ledger lines, activity first, minutes second (default rates). */
@@ -247,10 +257,13 @@ export const guiltTrip = {
     title: 'Nothing started.',
     body: 'You still have 47 min to spare. Turning back doesn’t count as an unlock, so it never makes the next one harder.',
   },
-  /** After the reply that carries on, the app asks how long. The site says so instead. */
+  /**
+   * After the reply that carries on, the app asks how long. The site says so instead, and
+   * names 3:40 only as an example, because nothing has been chosen yet.
+   */
   carryOn: {
-    line: 'Back up at 3:40.',
-    body: 'In the app, you choose how long next, and you only spend the minutes you use.',
+    line: 'How long, then?',
+    body: 'In the app, you choose next. The screen shows when you’ll be back up, like “Back up at 3:40,” and you only spend the minutes you use.',
   },
 };
 
@@ -260,11 +273,11 @@ export const features = {
   items: [
     {
       title: 'Rabbit holes, locked.',
-      body: 'Two apps, two categories, and two websites for free, or as many as you like on Premium. Screen Time keeps them locked, in every browser too.',
+      body: 'Two apps, two categories, and two websites for free, or many more on Premium. Screen Time keeps them locked, in every browser too.',
     },
     {
       title: 'Five ways up top.',
-      body: 'Walking, workouts, and mindful minutes come from Apple Health. A focus block needs nothing at all. On Premium, zones earn minutes when you arrive somewhere you chose. One Daily cap covers them all.',
+      body: 'Walking, workouts, and mindful minutes come from Apple Health. A focus block needs nothing at all. On Premium, zones earn minutes when you arrive somewhere you chose. They all share one Daily cap.',
     },
     {
       title: 'Back up at 3:40.',
@@ -276,7 +289,9 @@ export const features = {
     /**
      * An HTML replica of the Rabbit holes page on Free. The simulator has no Screen Time,
      * so its capture shows empty groups. The wording here is the app's own
-     * (RabbitHoles.xcstrings), and the app icons are stand-ins.
+     * (RabbitHoles.xcstrings), and the app icons are stand-ins. As in RabbitHolesView, apps
+     * and categories show their icon with the padlock badge, and a website shows a plain
+     * globe in ink-2 (`glyph`), with no tile and no badge.
      */
     holes: {
       time: '9:41',
@@ -300,10 +315,11 @@ export const features = {
           title: 'Categories · 1 of 2 free',
           rows: [{ icon: 'play', name: 'Games', color: '#5b8def' }],
           add: 'Lock a whole category…',
+          addDetail: 'Social, Games, Entertainment, and so on, as Apple groups them.',
         },
         {
           title: 'Websites · 1 of 2 free',
-          rows: [{ icon: 'globe', name: 'youtube.com', color: '#8a8078' }],
+          rows: [{ glyph: 'globe', name: 'youtube.com' }],
           add: 'Lock a website…',
         },
       ],
@@ -311,11 +327,11 @@ export const features = {
     },
     /** src/assets/screens/earn-light-top.png: earn-light.png from the top down to the Daily cap. */
     earn: {
-      alt: 'The Earn tab at 9:41. The plate reads “Sunday · Made today, 49 min” beside the standing bunny. Walking (15 min), Workouts (24 min) and Mindful minutes (10 min) are switched on and labeled Enabled, Focus blocks is on and Enabled, and Zones is switched off, labeled “Part of Premium”, with a dimmed 14 min. A note says steps, workouts and mindful minutes come from Apple Health, and under Limits the Daily cap is 60 min, “All ways together.”',
+      alt: 'The Earn tab at 9:41. The plate shows 49 min earned on Sunday beside the standing bunny. Walking (15 min), Workouts (24 min), and Mindful minutes (10 min) are switched on and labeled Enabled, Focus blocks is on and Enabled, and Zones is switched off, labeled “Part of Premium,” with a dimmed 14 min. A note says steps, workouts, and mindful minutes come from Apple Health, and under Limits the Daily cap is 60 min, “All ways together.”',
     },
     /** src/assets/screens/unlock-limit-15-light-top.png: unlock-limit-15-light.png down to the note. */
     limit: {
-      alt: 'The screen that sets a limit before dipping in. At the top are Never mind and “Your rabbit holes · 30 min to spare”. A large “15 min” sits over “Back up at 12:16”, then a slider from 1 to 30 and quick picks 5, 10, 15 and 30 with 15 selected, and the note “You only spend the minutes you use. Use all 15 and 15 min stay to spare.”',
+      alt: 'The screen that asks how long before you dip in. At the top are Never mind and “Your rabbit holes · 30 min to spare”. A large “15 min” sits over “Back up at 12:16”, then a slider from 1 to 30 and quick picks 5, 10, 15, and 30, with 15 selected, and the note “You only spend the minutes you use. Use all 15 and 15 min stay to spare.”',
     },
   },
 };
@@ -328,7 +344,7 @@ export const more = {
     {
       icon: 'checkpoint',
       title: 'Checkpoints',
-      body: 'Tap your tag to start. Tap it again to stop. An NFC sticker or a printed card, kept where the habit lives, keeps your rabbit holes locked until you do. Stay 30 minutes or more and you earn 10 min.',
+      body: 'Tap your tag or scan your card to start. Do it again to stop. An NFC sticker or a printed card, kept where the habit lives, keeps your rabbit holes locked until you stop. Stay 30 minutes or more and you earn 10 min.',
     },
     {
       icon: 'zone',
@@ -439,7 +455,7 @@ export const faq = {
     },
     {
       q: 'What’s a checkpoint?',
-      a: 'A tag or a card you keep somewhere real, like your desk. Tap it to start: your rabbit holes stay locked, and minutes can’t open them. Tap it again to stop. Stay 30 minutes or more and you earn 10 min. NTAG215 and NTAG213 stickers are confirmed to work.',
+      a: 'A tag or a card you keep somewhere real, like your desk. Tap your tag or scan your card to start: your rabbit holes stay locked, and minutes can’t open them. Do it again to stop. Stay 30 minutes or more and you earn 10 min. NTAG215 and NTAG213 stickers are confirmed to work.',
     },
     {
       q: 'Which iPhones does it work on?',
@@ -492,6 +508,7 @@ export const footer = {
 };
 
 export const help = {
+  pageTitle: `Help – ${brand.name}`,
   eyebrow: 'Up For Air',
   title: 'Help',
   subtitle: 'Short answers to the questions people ask, in the app’s own words.',
@@ -510,7 +527,7 @@ export const help = {
           a: 'Eight short steps: name your bunny, see how minutes are earned, see how they’re spent, allow Screen Time, choose the ways you want to earn minutes, choose your Daily cap, choose your rabbit holes, and match your apps so we can open them for you. Then you choose Free or Premium.',
         },
         {
-          q: 'Will the app show me around?',
+          q: 'Does the app explain itself?',
           a: 'Yes. The Earn and Pauses tabs each open with a short walkthrough the first time you visit, and the help button at the top right runs it again.',
         },
       ],
@@ -525,7 +542,7 @@ export const help = {
         },
         {
           q: 'Is there a limit?',
-          a: 'Yes. The Daily cap is the most you can earn in one day, all ways together, checkpoints included. It starts at 60 min, and you can choose 30, 60, 90, or 120 min, or no cap, on the Earn tab. Lowering it later in the day takes back nothing you already earned.',
+          a: 'Yes. The Daily cap is the most you can earn in one day, all ways together, checkpoints included. It starts at 60 min, and you can choose 30, 60, 90, or 120 min, or no cap, on the Earn tab. Lowering it later in the day keeps what you already earned.',
         },
         {
           q: 'What’s Most to spare?',
@@ -565,7 +582,7 @@ export const help = {
       items: [
         {
           q: 'What are pauses?',
-          a: 'A pause is a small moment before you choose how long. Quick sum gives you one sum to solve. In the Guilt trip, the bunny asks you to stay, and you hold a reply to choose it. Deep breath guides one slow breath. A short poem types out one public-domain poem. None is on until you turn it on, every pause is on Free, and each unlock shows one, picked at random.',
+          a: 'A pause is a small moment before you choose how long. Quick sum gives you one sum to solve. In the Guilt trip, the bunny asks you to stay, and you hold a reply to choose it. Deep breath guides one slow breath. A short poem types one public-domain poem. None is on until you turn it on, every pause is on Free, and each unlock shows one, picked at random.',
         },
         {
           q: 'What are extra pauses?',
@@ -579,7 +596,7 @@ export const help = {
       items: [
         {
           q: 'How do checkpoints work?',
-          a: 'A checkpoint is a tag or a card you keep somewhere real, like your desk or the kitchen. Tap your tag to start: your rabbit holes stay locked, and minutes can’t open them. Tap the same tag again to stop. A card works the same way, with a scan. Stay 30 minutes or more and you earn 10 min, which counts toward your Daily cap.',
+          a: 'A checkpoint is a tag or a card you keep somewhere real, like your desk or the kitchen. Tap your tag or scan your card to start: your rabbit holes stay locked, and minutes can’t open them. Do it again, with the same tag or card, to stop. Stay 30 minutes or more and you earn 10 min, which counts toward your Daily cap.',
         },
         {
           q: 'How many can I have?',
@@ -587,7 +604,7 @@ export const help = {
         },
         {
           q: 'Which NFC tags can I use?',
-          a: 'Any NFC tag that can be written to and holds more than 128 bytes. Up For Air writes one link on it and nothing else. NTAG215 and NTAG213 tags are confirmed to work. A locked tag, a bank card, or a transit card won’t.',
+          a: 'Any NFC tag that can be written to and holds more than 128 bytes. Up For Air writes one link on it and nothing else. NTAG215 and NTAG213 tags are confirmed to work. A read-only tag, a bank card, or a transit card won’t.',
         },
         {
           q: 'What if I lose my tag?',
@@ -612,7 +629,7 @@ export const help = {
           a: 'Premium is an App Store subscription, so you manage or cancel it in your Apple Account settings, anytime. Premium stays until the period ends, and we never delete the minutes you earned.',
         },
         {
-          q: 'What happens if I go back to Free?',
+          q: 'What happens if I switch to Free?',
           a: 'You keep two of each kind of rabbit hole, and you still earn and spend minutes the same way, with one way at a time. Zones stay listed but stop counting.',
         },
       ],
@@ -621,6 +638,7 @@ export const help = {
 };
 
 export const notFound = {
+  pageTitle: `Page not found – ${brand.name}`,
   tag: 'Page not found',
   title: 'Nothing down <em>this hole.</em>',
   subtitle: 'We couldn’t find that page. Let’s get you back up top.',
