@@ -180,7 +180,9 @@ const config = {
     font-size: 15px;
     line-height: 1.25;
     text-align: center;
-    touch-action: none;
+    /* A vertical swipe that starts on a reply still scrolls the page. The browser then
+       fires pointercancel, which lets go of the reply. */
+    touch-action: pan-y;
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
