@@ -32,7 +32,7 @@ const storeHref = live ? launch.appStoreUrl : '/#newsletter';
 const storeLabel = live ? 'Get the app' : 'Get notified';
 
 /**
- * Prices and the trial, from the app's local StoreKit file (Config/Sidequest.storekit).
+ * Prices and the trial, from the app's local StoreKit file (Config/UpForAir.storekit).
  * Check them against App Store Connect before launch. Every sentence that names a price or
  * the trial length reads it from here, so a change is one edit.
  */
